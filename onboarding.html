@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vítej — Marek Šollar OSP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#111116;--ink-soft:#64646e;--ink-faint:#adadba;--bg:#f7f7f5;--white:#fff;--blue:#1847f0;--blue-light:#eaedff;--blue-glow:rgba(24,71,240,.15);--green:#166534;--green-bg:#dcfce7;--red:#9f1239;--red-bg:#ffe4e6;--border:rgba(17,17,22,.07);--border-strong:rgba(17,17,22,.14);--shadow-sm:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.04);--shadow-md:0 4px 6px rgba(0,0,0,.04),0 20px 48px rgba(0,0,0,.08);--transition:.22s cubic-bezier(.4,0,.2,1);--font:'Plus Jakarta Sans',-apple-system,sans-serif}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+    nav{width:100%;background:rgba(247,247,245,.9);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:900;backdrop-filter:blur(18px)}
+    .nav-inner{max-width:1160px;margin:0 auto;padding:0 44px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:20px}
+    .nav-logo{font-size:1rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+    .nav-logo span{color:var(--blue)}
+    .nav-links{display:flex;gap:22px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--ink-soft);text-decoration:none;transition:color var(--transition)}
+    .nav-links a:hover{color:var(--blue)}
+    .btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:.84rem;font-weight:600;padding:9px 18px;border-radius:100px;text-decoration:none;border:none;cursor:pointer;transition:all var(--transition)}
+    .btn-primary{background:var(--blue);color:#fff}
+    .btn-primary:hover{background:#0f35c9}
+    @media(max-width:700px){.nav-links{display:none}.nav-inner{padding:0 20px}}
+    /* progress bar */
+    .progress-track{width:100%;height:3px;background:#e5e7eb;flex-shrink:0}
+    .progress-fill{height:100%;background:var(--blue);transition:width .5s ease}
+    /* top bar */
+    .top-meta{width:100%;max-width:640px;padding:20px 24px 0;display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--ink-soft)}
+    .step-indicator strong{color:var(--ink)}
+    /* wrap */
+    .ob-wrap{max-width:640px;width:100%;padding:0 24px 80px}
+    /* steps */
+    .step{display:none;padding-top:52px;animation:fadeUp .4s ease}
+    .step.active{display:block}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .step-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .step-eyebrow::before{content:'';width:14px;height:2px;background:var(--blue);border-radius:2px}
+    .step h1{font-size:clamp(1.9rem,4vw,2.7rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:14px}
+    .step p.lead{font-size:1rem;color:var(--ink-soft);line-height:1.75;margin-bottom:32px}
+    /* form */
+    .fg{margin-bottom:20px}
+    .fg label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px}
+    .fg input,.fg select{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:14px;font-family:var(--font);font-size:.9375rem;color:var(--ink);background:var(--white);transition:all var(--transition);outline:none;-webkit-appearance:none}
+    .fg input:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,240,.1)}
+    /* option cards */
+    .oc-list{display:flex;flex-direction:column;gap:10px}
+    .oc{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1.5px solid var(--border);border-radius:16px;cursor:pointer;transition:all var(--transition);background:var(--white)}
+    .oc:hover{border-color:var(--blue);background:var(--blue-light)}
+    .oc.sel{border-color:var(--blue);background:var(--blue-light)}
+    .oc-icon{font-size:1.4rem;flex-shrink:0}
+    .oc-text h4{font-size:.9375rem;font-weight:700;margin-bottom:2px}
+    .oc-text p{font-size:.8rem;color:var(--ink-soft);margin:0}
+    .oc-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-strong);margin-left:auto;flex-shrink:0;transition:all var(--transition)}
+    .oc.sel .oc-radio{border-color:var(--blue);background:var(--blue)}
+    /* checkbox cards */
+    .cc-list{display:flex;flex-direction:column;gap:8px}
+    .cc{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid var(--border);border-radius:14px;cursor:pointer;transition:all var(--transition);font-size:.875rem;background:var(--white)}
+    .cc:hover{border-color:var(--blue)}
+    .cc.sel{border-color:var(--green);background:var(--green-bg)}
+    .cc-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--border-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all var(--transition)}
+    .cc.sel .cc-box{background:var(--green);border-color:var(--green);color:#fff}
+    /* slider */
+    .slider-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+    .slider-val{font-size:1.8rem;font-weight:800;color:var(--blue);letter-spacing:-.04em}
+    .slider-hint{font-size:.72rem;color:var(--ink-faint)}
+    input[type="range"]{width:100%;-webkit-appearance:none;height:6px;border-radius:100px;outline:none;cursor:pointer}
+    input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--white);border:3px solid var(--blue);box-shadow:0 2px 8px rgba(24,71,240,.3);cursor:pointer}
+    .slider-labels{display:flex;justify-content:space-between;font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+    /* nav buttons */
+    .step-nav{display:flex;align-items:center;justify-content:space-between;margin-top:36px;gap:12px}
+    .btn-back{padding:12px 24px;border-radius:100px;background:transparent;color:var(--ink-soft);border:1.5px solid var(--border);font-family:var(--font);font-size:.9375rem;font-weight:600;cursor:pointer;transition:all var(--transition)}
+    .btn-back:hover{border-color:var(--ink);color:var(--ink)}
+    .btn-fwd{padding:13px 28px;border-radius:100px;background:var(--blue);color:#fff;border:none;font-family:var(--font);font-size:.9375rem;font-weight:700;cursor:pointer;transition:all var(--transition)}
+    .btn-fwd:hover{background:#0f35c9;transform:translateY(-1px);box-shadow:0 6px 24px var(--blue-glow)}
+    /* welcome */
+    .welcome-box{background:var(--white);border:1px solid var(--border);border-radius:24px;padding:32px;margin-top:32px}
+    .wc-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px}
+    .wc-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+    .wc-row:last-child{border-bottom:none;padding-bottom:0}
+    .wc-icon{font-size:1.1rem;flex-shrink:0}
+    .wc-row h4{font-weight:700;margin-bottom:3px;font-size:.9rem}
+    .wc-row p{color:var(--ink-soft);font-size:.82rem;margin:0;line-height:1.5}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .btn-big{display:inline-flex;align-items:center;gap:8px;padding:15px 28px;border-radius:100px;background:var(--blue);color:#fff;border:none;font-family:var(--font);font-size:.9375rem;font-weight:700;cursor:pointer;transition:all var(--transition);text-decoration:none}
+    .btn-big:hover{background:#0f35c9;transform:translateY(-1px);box-shadow:0 8px 24px var(--blue-glow)}
+    .btn-sec{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;border-radius:100px;border:1.5px solid var(--border-strong);color:var(--ink);text-decoration:none;font-weight:600;font-size:.9375rem;transition:all var(--transition);font-family:var(--font);background:transparent;cursor:pointer}
+    .btn-sec:hover{border-color:var(--ink);background:var(--white)}
+    /* user summary card */
+    .summary-card{background:var(--blue-light);border:1px solid rgba(24,71,240,.15);border-radius:18px;padding:20px;margin-bottom:24px;font-size:.9rem}
+    .summary-card strong{color:var(--blue)}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Marek Šollar <span>· OSP</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Domů</a></li>
+      <li><a href="rodice.html">Pro rodiče</a></li>
+      <li><a href="stres.html">Jak na stres</a></li>
+      <li><a href="portal.html">✏️ Procvičovat</a></li>
+      <li><a href="dashboard.html">Můj pokrok</a></li>
+      <li><a href="admin.html">⚙️ Admin</a></li>
+    </ul>
+    <a href="index.html#booking" class="btn btn-primary">Rezervovat →</a>
+  </div>
+</nav>
+<div class="progress-track" style="width:100%"><div class="progress-fill" id="progressFill" style="width:20%"></div></div>
+
+<div class="top-meta"><div class="step-indicator">Krok <strong id="stepLabel">1</strong> z 5</div><div id="userGreeting" style="font-weight:600"></div></div>
+
+<div class="ob-wrap">
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step1">
+    <div class="step-eyebrow">Začínáme</div>
+    <h1>Vítej v přípravě na OSP! 👋</h1>
+    <p class="lead">Potřebujeme od tebe pár informací, abychom přípravu nastavili přesně na tebe. Zabere to 3 minuty.</p>
+    <div id="prefilledNote" style="display:none" class="summary-card">Vidím, že jsi se právě zaregistroval/a jako <strong id="prefilledName">—</strong>. Část dat jsme předvyplnili!</div>
+    <div class="fg"><label>Jméno</label><input type="text" id="ob-name" placeholder="Jan" required></div>
+    <div class="fg"><label>Příjmení</label><input type="text" id="ob-surname" placeholder="Novák" required></div>
+    <div class="fg"><label>E-mail</label><input type="email" id="ob-email" placeholder="jan@email.cz" required></div>
+    <div class="step-nav"><div></div><button class="btn-fwd" onclick="goStep(2)">Pokračovat →</button></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step2">
+    <div class="step-eyebrow">Termíny</div>
+    <h1>Kdy plánuješ skládat OSP?</h1>
+    <p class="lead">Vyber termín nebo termíny — od toho se odvine délka a intenzita přípravy.</p>
+    <div class="oc-list" id="termList">
+      <div class="oc" onclick="selectOC(this,'term')"><span class="oc-icon">📅</span><div class="oc-text"><h4>25. dubna 2026</h4><p>Přihláška do 9. 4. — kratší přípravná doba</p></div><div class="oc-radio"></div></div>
+      <div class="oc" onclick="selectOC(this,'term')"><span class="oc-icon">📅</span><div class="oc-text"><h4>23. května 2026</h4><p>Přihláška do 7. 5. — více času na přípravu</p></div><div class="oc-radio"></div></div>
+      <div class="oc" onclick="selectOC(this,'term')"><span class="oc-icon">🗓️</span><div class="oc-text"><h4>Oba termíny</h4><p>Duben i květen — maximální šance</p></div><div class="oc-radio"></div></div>
+      <div class="oc" onclick="selectOC(this,'term')"><span class="oc-icon">❓</span><div class="oc-text"><h4>Zatím nevím</h4><p>Poradíme ti, který termín je nejlepší</p></div><div class="oc-radio"></div></div>
+    </div>
+    <div class="step-nav"><button class="btn-back" onclick="goStep(1)">← Zpět</button><button class="btn-fwd" onclick="goStep(3)">Pokračovat →</button></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step3">
+    <div class="step-eyebrow">Cíl</div>
+    <h1>Jaký percentil chceš dosáhnout?</h1>
+    <p class="lead">Buď ambiciózní, ale realistický. Průměrný nárůst u mých studentů je +23 percentilních bodů za 10 lekcí.</p>
+    <div class="fg">
+      <label>Cílový percentil</label>
+      <div class="slider-top"><span class="slider-val" id="ob-slider-val">75. percentil</span><span class="slider-hint">táhni pro nastavení</span></div>
+      <input type="range" id="ob-slider" min="55" max="99" value="75" step="1" oninput="updateObSlider()">
+      <div class="slider-labels"><span>55.</span><span>75.</span><span>99.</span></div>
+    </div>
+    <div class="fg"><label>Na jakou fakultu / obor se hlásíš?</label><input type="text" id="ob-faculty" placeholder="např. Psychologie MUNI, Práva UK…"></div>
+    <div class="step-nav"><button class="btn-back" onclick="goStep(2)">← Zpět</button><button class="btn-fwd" onclick="goStep(4)">Pokračovat →</button></div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step4">
+    <div class="step-eyebrow">Výchozí stav</div>
+    <h1>Jak jsi na tom teď?</h1>
+    <p class="lead">Pomůže mi to nastavit správnou náročnost a tempo od první lekce.</p>
+    <div style="margin-bottom:20px">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px">Zkušenost s OSP</div>
+      <div class="oc-list">
+        <div class="oc" onclick="selectOC(this,'exp')"><span class="oc-icon">🌱</span><div class="oc-text"><h4>Úplný začátečník</h4><p>Ještě jsem OSP nikdy nezkoušel/a</p></div><div class="oc-radio"></div></div>
+        <div class="oc" onclick="selectOC(this,'exp')"><span class="oc-icon">📚</span><div class="oc-text"><h4>Trochu jsem procvičoval/a</h4><p>Pár úloh, orientuji se v základech</p></div><div class="oc-radio"></div></div>
+        <div class="oc" onclick="selectOC(this,'exp')"><span class="oc-icon">📝</span><div class="oc-text"><h4>Absolvoval/a jsem ostré testy</h4><p>Mám výsledky z reálných SCIO testů</p></div><div class="oc-radio"></div></div>
+      </div>
+    </div>
+    <div style="font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px">Kde cítíš největší slabinu? (lze vybrat více)</div>
+    <div class="cc-list">
+      <div class="cc" onclick="toggleCC(this)"><div class="cc-box"></div>Analogie a slovní vztahy</div>
+      <div class="cc" onclick="toggleCC(this)"><div class="cc-box"></div>Logické řady a číselné vzorce</div>
+      <div class="cc" onclick="toggleCC(this)"><div class="cc-box"></div>Logické klamy a argumentace</div>
+      <div class="cc" onclick="toggleCC(this)"><div class="cc-box"></div>Porozumění textu</div>
+      <div class="cc" onclick="toggleCC(this)"><div class="cc-box"></div>Stres a time-management</div>
+    </div>
+    <div class="step-nav"><button class="btn-back" onclick="goStep(3)">← Zpět</button><button class="btn-fwd" onclick="finishOnboarding()">Dokončit →</button></div>
+  </div>
+
+  <!-- STEP 5 – WELCOME -->
+  <div class="step" id="step5" style="text-align:center;padding-top:64px">
+    <div style="font-size:3.5rem;margin-bottom:16px">🎉</div>
+    <div class="step-eyebrow" style="justify-content:center">Hotovo!</div>
+    <h1>Jsi připraven/a, <span id="welcomeName">příteli</span>!</h1>
+    <p class="lead">Ozvu se ti do 24 hodin s termínem diagnostické lekce zdarma. Mezitím si proklikej, co je pro tebe připraveno.</p>
+    <div class="welcome-box" style="text-align:left">
+      <div class="wc-label">Co tě čeká dál</div>
+      <div class="wc-row"><div class="wc-icon">📧</div><div><h4>Uvítací e-mail</h4><p>Dostaneš ho do pár minut s přístupem k materiálům a prvními úkoly.</p></div></div>
+      <div class="wc-row"><div class="wc-icon">📞</div><div><h4>Marek ti napíše do 24h</h4><p>Domluvíte termín diagnostické lekce zdarma a nastavíte plán.</p></div></div>
+      <div class="wc-row"><div class="wc-icon">✏️</div><div><h4>Procvičovací portál</h4><p>800+ úloh s časomírou čeká — portál je otevřený hned teď.</p></div></div>
+      <div class="wc-row"><div class="wc-icon">📊</div><div><h4>Osobní dashboard</h4><p>Sleduj svůj pokrok, lekce, úkoly a zprávy od Marka.</p></div></div>
+    </div>
+    <div class="cta-row" style="justify-content:center">
+      <a href="portal.html" class="btn-big">✏️ Jít procvičovat</a>
+      <a href="dashboard.html" class="btn-sec">📊 Můj pokrok</a>
+      <a href="stres.html" class="btn-sec">🧘 Jak na stres</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let currentStep=1;
+
+  // Pre-fill from localStorage if user came from form
+  window.addEventListener('DOMContentLoaded',()=>{
+    const saved=localStorage.getItem('osp_user');
+    if(saved){
+      try{
+        const u=JSON.parse(saved);
+        if(u.name){
+          document.getElementById('ob-name').value=u.name;
+          document.getElementById('ob-surname').value=u.surname||'';
+          document.getElementById('ob-email').value=u.email||'';
+          document.getElementById('prefilledName').textContent=u.name+' '+u.surname;
+          document.getElementById('prefilledNote').style.display='block';
+          document.getElementById('userGreeting').textContent='Ahoj, '+u.name+'!';
+          // pre-select term
+          if(u.term){
+            document.querySelectorAll('#termList .oc').forEach(oc=>{
+              if(oc.querySelector('h4').textContent.includes(u.term.substring(0,10))){
+                oc.classList.add('sel');
+              }
+            });
+          }
+          // pre-set slider
+          if(u.percentil){
+            document.getElementById('ob-slider').value=u.percentil;
+            updateObSlider();
+          }
+          // set welcome name
+          document.getElementById('welcomeName').textContent=u.name+'!';
+        }
+      }catch(e){}
+    }
+  });
+
+  function goStep(n){
+    document.getElementById('step'+currentStep).classList.remove('active');
+    currentStep=n;
+    document.getElementById('step'+n).classList.add('active');
+    document.getElementById('stepLabel').textContent=Math.min(n,5)+' / 5';
+    document.getElementById('progressFill').style.width=(n/5*100)+'%';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function selectOC(el,group){
+    el.closest('.oc-list').querySelectorAll('.oc').forEach(o=>o.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+
+  function toggleCC(el){
+    el.classList.toggle('sel');
+    el.querySelector('.cc-box').textContent=el.classList.contains('sel')?'✓':'';
+  }
+
+  function updateObSlider(){
+    const v=document.getElementById('ob-slider').value;
+    document.getElementById('ob-slider-val').textContent=v+'. percentil';
+    const pct=(v-55)/(99-55)*100;
+    document.getElementById('ob-slider').style.background=`linear-gradient(to right,var(--blue) 0%,var(--blue) ${pct}%,#dde1f8 ${pct}%,#dde1f8 100%)`;
+  }
+  updateObSlider();
+
+  function finishOnboarding(){
+    // Collect all data and save enriched profile
+    const name=document.getElementById('ob-name').value.trim()||'Student';
+    const surname=document.getElementById('ob-surname').value.trim();
+    const email=document.getElementById('ob-email').value.trim();
+    const percentil=document.getElementById('ob-slider').value;
+    const faculty=document.getElementById('ob-faculty').value.trim();
+    const weaknesses=[...document.querySelectorAll('.cc.sel')].map(c=>c.textContent.trim());
+    const termEl=document.querySelector('#termList .oc.sel');
+    const term=termEl?termEl.querySelector('h4').textContent:'—';
+    const profile={name,surname,email,percentil,faculty,weaknesses,term,onboardedAt:new Date().toISOString()};
+    localStorage.setItem('osp_user',JSON.stringify(profile));
+    // Update welcome name
+    document.getElementById('welcomeName').textContent=name+'!';
+    goStep(5);
+  }
+</script>
+</body>
+</html>

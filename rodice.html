@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pro rodiče — Marek Šollar OSP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#111116;--ink-soft:#64646e;--ink-faint:#adadba;--bg:#f7f7f5;--white:#fff;--blue:#1847f0;--blue-light:#eaedff;--blue-glow:rgba(24,71,240,.15);--green:#166534;--green-bg:#dcfce7;--red:#9f1239;--red-bg:#ffe4e6;--border:rgba(17,17,22,.07);--border-strong:rgba(17,17,22,.14);--shadow-sm:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.04);--shadow-md:0 4px 6px rgba(0,0,0,.04),0 20px 48px rgba(0,0,0,.08);--transition:.22s cubic-bezier(.4,0,.2,1);--font:'Plus Jakarta Sans',-apple-system,sans-serif}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:1100px;margin:0 auto;padding:0 44px;position:relative;z-index:1}
+    @media(max-width:700px){.wrap{padding:0 20px}}
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+    .eyebrow::before{content:'';width:16px;height:2px;background:var(--blue);border-radius:2px}
+    .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font);font-size:.9375rem;font-weight:600;padding:13px 26px;border-radius:100px;text-decoration:none;border:none;cursor:pointer;transition:all var(--transition);white-space:nowrap}
+    .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#0f35c9;transform:translateY(-1px);box-shadow:0 6px 24px var(--blue-glow)}
+    .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--border-strong)}.btn-ghost:hover{border-color:var(--ink);background:var(--white)}
+    .btn-sm{padding:9px 18px;font-size:.84rem}
+    nav{position:sticky;top:0;z-index:900;background:rgba(247,247,245,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:20px}
+    .nav-logo{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+    .nav-logo span{color:var(--blue)}
+    .nav-links{display:flex;gap:22px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--ink-soft);text-decoration:none;transition:color var(--transition)}
+    .nav-links a:hover,.nav-links a.active{color:var(--blue);font-weight:600}
+    @media(max-width:860px){.nav-links{display:none}}
+    /* HERO */
+    .hero{padding:96px 0 72px;position:relative;overflow:hidden}
+    .hero-blob{position:absolute;width:500px;height:500px;border-radius:50%;background:var(--blue);filter:blur(120px);opacity:.06;top:-150px;right:-100px;pointer-events:none}
+    .hero-inner{display:grid;grid-template-columns:1fr 400px;gap:72px;align-items:center}
+    @media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:40px}}
+    .hero-kicker{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);border-radius:100px;padding:6px 16px 6px 8px;font-size:.78rem;font-weight:600;color:var(--ink-soft);margin-bottom:24px;box-shadow:var(--shadow-sm)}
+    .hero-kicker-dot{width:26px;height:26px;border-radius:100px;background:var(--green-bg);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:.75rem}
+    .hero h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:800;line-height:1.06;letter-spacing:-.04em;margin-bottom:22px}
+    .hero h1 em{font-style:normal;color:var(--blue)}
+    .hero-sub{font-size:1.05rem;color:var(--ink-soft);line-height:1.78;margin-bottom:36px;max-width:500px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .faq-preview{background:var(--white);border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:var(--shadow-md)}
+    .faq-preview-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:20px}
+    .faq-q{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);font-size:.875rem;cursor:pointer}
+    .faq-q:last-child{border-bottom:none;padding-bottom:0}
+    .faq-q-icon{width:22px;height:22px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;margin-top:1px}
+    .faq-q-text{color:var(--ink-soft);line-height:1.5}
+    /* TRUST */
+    .trust-strip{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:32px 0}
+    .trust-inner{display:flex;justify-content:center;gap:64px;flex-wrap:wrap}
+    .trust-item{text-align:center}
+    .trust-num{font-size:2rem;font-weight:800;color:var(--blue);letter-spacing:-.04em;line-height:1}
+    .trust-label{font-size:.8rem;color:var(--ink-soft);margin-top:4px}
+    /* FAQ SECTION */
+    .faq-sec{padding:96px 0}
+    .faq-sec h2{font-size:clamp(2rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-top:6px;margin-bottom:52px}
+    .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    @media(max-width:720px){.faq-grid{grid-template-columns:1fr}}
+    .faq-card{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:28px;transition:all var(--transition)}
+    .faq-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
+    .faq-card-q{font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px}
+    .faq-card-icon{font-size:1.2rem;flex-shrink:0}
+    .faq-card-a{font-size:.9rem;color:var(--ink-soft);line-height:1.75}
+    .faq-card-a strong{color:var(--ink)}
+    /* HOW */
+    .how-sec{background:var(--white);padding:96px 0}
+    .how-sec h2{font-size:clamp(2rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-top:6px;margin-bottom:52px}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+    @media(max-width:800px){.steps{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:480px){.steps{grid-template-columns:1fr}}
+    .step{text-align:center}
+    .step-num{width:52px;height:52px;border-radius:50%;background:var(--blue);color:#fff;font-size:1.1rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .step h3{font-size:.95rem;font-weight:700;margin-bottom:8px}
+    .step p{font-size:.82rem;color:var(--ink-soft);line-height:1.65}
+    /* PRICING */
+    .pricing-sec{padding:96px 0}
+    .pricing-sec h2{font-size:clamp(2rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-top:6px;margin-bottom:16px}
+    .pricing-sub{font-size:1rem;color:var(--ink-soft);margin-bottom:48px}
+    .price-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    @media(max-width:720px){.price-row{grid-template-columns:1fr}}
+    .pc{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:28px;transition:all var(--transition)}
+    .pc:hover:not(.pc-feat){box-shadow:var(--shadow-md);transform:translateY(-3px)}
+    .pc-feat{background:var(--blue);border-color:transparent}
+    .pc-name{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px}
+    .pc-feat .pc-name{color:rgba(255,255,255,.6)}
+    .pc-price{font-size:2.4rem;font-weight:800;letter-spacing:-.05em;line-height:1;margin-bottom:6px}
+    .pc-feat .pc-price{color:#fff}
+    .pc-unit{font-size:.82rem;color:var(--ink-soft);margin-bottom:20px}
+    .pc-feat .pc-unit{color:rgba(255,255,255,.6)}
+    .pc-note{font-size:.82rem;color:var(--ink-soft);line-height:1.6}
+    .pc-feat .pc-note{color:rgba(255,255,255,.7)}
+    /* GUARANTEE */
+    .guarantee-sec{background:var(--ink);padding:80px 0}
+    .guarantee-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    @media(max-width:800px){.guarantee-inner{grid-template-columns:1fr;gap:40px}}
+    .guarantee-inner h2{font-size:clamp(2rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1.1;margin-bottom:20px}
+    .guarantee-inner p{font-size:.975rem;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:16px}
+    .g-badge{display:flex;align-items:flex-start;gap:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin-bottom:12px}
+    .g-badge:last-child{margin-bottom:0}
+    .g-icon{font-size:1.5rem;flex-shrink:0}
+    .g-badge h4{font-size:.9rem;font-weight:700;color:#fff;margin-bottom:4px}
+    .g-badge p{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.5;margin:0}
+    /* CTA */
+    .cta-sec{padding:96px 0;text-align:center}
+    .cta-sec h2{font-size:clamp(2rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-.04em;margin-bottom:16px}
+    .cta-sec p{font-size:1rem;color:var(--ink-soft);max-width:480px;margin:0 auto 36px;line-height:1.7}
+    .cta-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    /* FOOTER */
+    footer{background:var(--ink);padding:44px 0;text-align:center}
+    .footer-logo{font-size:1.1rem;font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:10px}
+    .footer-logo span{color:#3b64f5}
+    footer p{font-size:.82rem;color:rgba(255,255,255,.35);line-height:1.8}
+    footer a{color:rgba(255,255,255,.35);text-decoration:none;transition:color var(--transition)}
+    footer a:hover{color:#fff}
+    .footer-hr{border:none;border-top:1px solid rgba(255,255,255,.06);margin:20px auto;max-width:300px}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="wrap nav-inner">
+    <a href="index.html" class="nav-logo">Marek Šollar <span>· OSP</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Domů</a></li>
+      <li><a href="rodice.html" class="active">Pro rodiče</a></li>
+      <li><a href="stres.html">Jak na stres</a></li>
+      <li><a href="portal.html">✏️ Procvičovat</a></li>
+      <li><a href="dashboard.html">Můj pokrok</a></li>
+      <li><a href="admin.html">⚙️ Admin</a></li>
+    </ul>
+    <a href="index.html#booking" class="btn btn-primary btn-sm">Rezervovat →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-blob"></div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="reveal">
+        <div class="hero-kicker"><div class="hero-kicker-dot">👨‍👩‍👧</div>Stránka pro rodiče</div>
+        <h1>Vaše dítě má cíl.<br>Pomůžeme mu ho <em>dosáhnout.</em></h1>
+        <p class="hero-sub">Rozumíme, že investice do přípravy je důležité rozhodnutí. Tady najdete odpovědi na vše, co vás zajímá — od cen přes metody až po záruky výsledků.</p>
+        <div class="hero-actions">
+          <a href="index.html#booking" class="btn btn-primary">Domluvit bezplatnou konzultaci</a>
+          <a href="#faq" class="btn btn-ghost">Časté otázky</a>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="faq-preview">
+          <div class="faq-preview-title">Co rodiče nejčastěji řeší</div>
+          <div class="faq-q"><div class="faq-q-icon">?</div><div class="faq-q-text">Jak poznám, že doučování funguje?</div></div>
+          <div class="faq-q"><div class="faq-q-icon">?</div><div class="faq-q-text">Co když mé dítě neudělá pokrok?</div></div>
+          <div class="faq-q"><div class="faq-q-icon">?</div><div class="faq-q-text">Jaká je cena a jak probíhá platba?</div></div>
+          <div class="faq-q"><div class="faq-q-icon">?</div><div class="faq-q-text">Jak probíhá online lekce?</div></div>
+          <div class="faq-q"><div class="faq-q-icon">?</div><div class="faq-q-text">Za jak dlouho uvidíme výsledky?</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-strip">
+  <div class="wrap trust-inner">
+    <div class="trust-item"><div class="trust-num">92%</div><div class="trust-label">úspěšně přijatých na VŠ</div></div>
+    <div class="trust-item"><div class="trust-num">+23</div><div class="trust-label">průměrný nárůst percentilu</div></div>
+    <!--<div class="trust-item"><div class="trust-num">MUNI</div><div class="trust-label">Marek studuje psychologii</div></div>-->
+    <div class="trust-item"><div class="trust-num">24h</div><div class="trust-label">odpovídám do 24 hodin</div></div>
+  </div>
+</div>
+
+<section class="faq-sec" id="faq">
+  <div class="wrap">
+    <div class="eyebrow reveal">Vaše otázky</div>
+    <h2 class="reveal">Co rodiče nejčastěji chtějí vědět</h2>
+    <div class="faq-grid">
+      <div class="faq-card reveal d1"><div class="faq-card-q"><span class="faq-card-icon">📈</span>Jak poznám, že doučování funguje?</div><div class="faq-card-a">Po každé lekci dostanete stručné shrnutí pokroku. Každých 5 lekcí provádíme <strong>testovací simulaci</strong> a výsledky porovnáváme s výchozím stavem.</div></div>
+      <div class="faq-card reveal d2"><div class="faq-card-q"><span class="faq-card-icon">🛡️</span>Co když mé dítě neudělá pokrok?</div><div class="faq-card-a">Pokud po 5 lekcích nevidíme posun, <strong>vracíme peníze za nevyčerpané lekce</strong> bez otázek.</div></div>
+      <div class="faq-card reveal d1"><div class="faq-card-q"><span class="faq-card-icon">💳</span>Jak probíhá platba?</div><div class="faq-card-a">Jednotlivé lekce se platí předem bankovním převodem. Balíčky lze rozdělit na <strong>dvě splátky</strong>. Faktura do 24h.</div></div>
+      <div class="faq-card reveal d2"><div class="faq-card-q"><span class="faq-card-icon">💻</span>Jak probíhá online lekce?</div><div class="faq-card-a">Přes <strong>Zoom nebo Google Meet</strong>. Lekce sdílíme interaktivní tabuli, vše se nahrává — student i rodiče mohou nahrávku zpětně zhlédnout.</div></div>
+      <div class="faq-card reveal d1"><div class="faq-card-q"><span class="faq-card-icon">⏱️</span>Za jak dlouho uvidíme výsledky?</div><div class="faq-card-a">První zlepšení studenti pociťují obvykle <strong>po 3–4 lekcích</strong>. Výrazný nárůst percentilu (15+) přichází zpravidla po 8–10 lekcích.</div></div>
+      <div class="faq-card reveal d2"><div class="faq-card-q"><span class="faq-card-icon">👤</span>Mohu jako rodič sledovat pokrok?</div><div class="faq-card-a">Ano. Po každé lekci zasílám <strong>stručný report</strong> — co jsme procvičovali, kde jsou rezervy a co bude následovat.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="how-sec">
+  <div class="wrap">
+    <div class="eyebrow reveal">Jak to funguje</div>
+    <h2 class="reveal">Od prvního kontaktu po přijetí na VŠ</h2>
+    <div class="steps">
+      <div class="step reveal d1"><div class="step-num">1</div><h3>Bezplatná konzultace</h3><p>15 minut online — zjistíme cíl, aktuální úroveň a nastavíme realistická očekávání.</p></div>
+      <div class="step reveal d2"><div class="step-num">2</div><h3>Diagnostický test</h3><p>Identifikujeme přesně slabá místa a sestavíme individuální plán přípravy.</p></div>
+      <div class="step reveal d3"><div class="step-num">3</div><h3>Pravidelné lekce</h3><p>1–2× týdně, online nebo osobně. Po každé lekci report pro rodiče.</p></div>
+      <div class="step reveal d3"><div class="step-num">4</div><h3>Simulace & výsledek</h3><p>Před termínem simulace ostrého testu. Pak jen přijít a zazářit.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing-sec">
+  <div class="wrap">
+    <div class="eyebrow reveal">Ceny</div>
+    <h2 class="reveal">Transparentní, bez skrytých poplatků</h2>
+    <p class="pricing-sub reveal">První konzultace (15 min) a první lekce jsou vždy zdarma.</p>
+    <div class="price-row">
+      <div class="pc reveal d1"><div class="pc-name">Jednotlivá lekce</div><div class="pc-price">650 Kč</div><div class="pc-unit">60 minut · bez závazků</div><div class="pc-note">Ideální pro vyzkoušení nebo přípravu konkrétní oblasti. Platba před lekcí.</div></div>
+      <div class="pc pc-feat reveal d2"><div class="pc-name">Balíček 10 lekcí</div><div class="pc-price">5 500 Kč</div><div class="pc-unit">550 Kč/lekce · úspora 1 000 Kč</div><div class="pc-note">Nejoblíbenější volba. Individuální plán, přístup k bance úloh, 1× simulace testu.</div></div>
+      <div class="pc reveal d3"><div class="pc-name">Víkendový bootcamp</div><div class="pc-price">1 800 Kč</div><div class="pc-unit">8 hodin · max. 8 studentů</div><div class="pc-note">Intenzivní celodenní příprava těsně před termínem. Brno nebo Praha.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="guarantee-sec">
+  <div class="wrap">
+    <div class="guarantee-inner">
+      <div class="reveal">
+        <h2>Vaše investice je chráněna.</h2>
+        <p>Rozumím, že svěřit přípravu dítěte na klíčové zkoušky vyžaduje důvěru. Sám jsem si zkouškami prošel — vím, co to obnáší, a stojím za svými výsledky konkrétními zárukami.</p>
+      </div>
+      <div class="reveal d1">
+        <div class="g-badge"><div class="g-icon">💰</div><div><h4>Záruka vrácení peněz</h4><p>Bez pokroku po 5 lekcích? Vracím nevyčerpané lekce bez otázek.</p></div></div>
+        <div class="g-badge"><div class="g-icon">📊</div><div><h4>Pravidelné reporty</h4><p>Po každé lekci víte přesně, co se dělo a jaký je plán.</p></div></div>
+        <div class="g-badge"><div class="g-icon">📞</div><div><h4>Dostupnost</h4><p>Odpovídám do 24h — i o víkendu. Nikdy sami s otázkami.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-sec">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="justify-content:center">Začít</div>
+    <h2 class="reveal">Nezávazná konzultace zdarma</h2>
+    <p class="reveal">15 minut online. Zjistíme, kde vaše dítě stojí a co potřebuje. Bez závazků, bez platby.</p>
+    <div class="cta-actions reveal">
+      <a href="index.html#booking" class="btn btn-primary">Rezervovat konzultaci zdarma →</a>
+      <a href="tel:+420777123456" class="btn btn-ghost">📞 +420 777 123 456</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-logo">Marek Šollar <span>OSP</span></div>
+    <p>marek.sollar@doucovaniosp.cz · +420 777 123 456</p>
+    <hr class="footer-hr">
+    <p><a href="index.html">Domů</a> · <a href="stres.html">Jak na stres</a> · <a href="portal.html">Portál</a> · <a href="dashboard.html">Dashboard</a></p>
+  </div>
+</footer>
+<script>
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

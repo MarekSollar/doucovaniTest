@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Můj pokrok — OSP Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#111116;--ink-soft:#64646e;--ink-faint:#adadba;--bg:#f7f7f5;--white:#fff;--blue:#1847f0;--blue-mid:#3b64f5;--blue-light:#eaedff;--green:#166534;--green-bg:#dcfce7;--red:#9f1239;--red-bg:#ffe4e6;--orange:#c2410c;--orange-bg:#fff7ed;--border:rgba(17,17,22,.07);--border-strong:rgba(17,17,22,.14);--shadow-sm:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.04);--shadow-md:0 4px 6px rgba(0,0,0,.04),0 20px 48px rgba(0,0,0,.08);--transition:.22s cubic-bezier(.4,0,.2,1);--font:'Plus Jakarta Sans',-apple-system,sans-serif}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 44px}
+    @media(max-width:700px){.wrap{padding:0 16px}}
+    nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:900}
+    .nav-inner-d{display:flex;align-items:center;justify-content:space-between;padding:14px 44px;gap:16px;max-width:1200px;margin:0 auto}
+    .nav-logo{font-size:1rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+    .nav-logo span{color:var(--blue)}
+    .nav-links{display:flex;gap:22px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--ink-soft);text-decoration:none;transition:color var(--transition)}
+    .nav-links a:hover,.nav-links a.active{color:var(--blue);font-weight:600}
+    .btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:.84rem;font-weight:600;padding:9px 18px;border-radius:100px;text-decoration:none;border:none;cursor:pointer;transition:all var(--transition)}
+    .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--border-strong)}
+    .btn-ghost:hover{border-color:var(--ink)}
+    @media(max-width:860px){.nav-links{display:none}}
+    /* layout */
+    .dash-layout{padding:32px 0 60px;display:flex;flex-direction:column;gap:22px}
+    /* welcome bar */
+    .welcome-bar{background:var(--blue);border-radius:22px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    .welcome-left h2{font-size:1.5rem;font-weight:800;letter-spacing:-.04em;color:#fff;margin-bottom:4px}
+    .welcome-left p{font-size:.875rem;color:rgba(255,255,255,.65)}
+    .welcome-right{display:flex;gap:28px;flex-wrap:wrap}
+    .wstat{text-align:center}
+    .wstat-num{font-size:2rem;font-weight:800;color:#fff;letter-spacing:-.04em;line-height:1}
+    .wstat-label{font-size:.72rem;color:rgba(255,255,255,.6);margin-top:2px}
+    .countdown-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:10px 20px;font-size:.875rem;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px;margin-top:14px;width:fit-content}
+    /* grids */
+    .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .g3{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+    @media(max-width:900px){.g4,.g2,.g3{grid-template-columns:1fr}}
+    /* cards */
+    .card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:22px}
+    .card-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+    /* kpi */
+    .kpi-num{font-size:2.2rem;font-weight:800;letter-spacing:-.05em;line-height:1;color:var(--ink)}
+    .kpi-sub{font-size:.8rem;color:var(--ink-soft);margin-top:4px}
+    .badge{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:600;padding:3px 8px;border-radius:100px;margin-top:10px}
+    .bg-green{background:var(--green-bg);color:var(--green)}
+    .bg-blue{background:var(--blue-light);color:var(--blue)}
+    .bg-orange{background:var(--orange-bg);color:var(--orange)}
+    /* chart */
+    svg.chart{width:100%;overflow:visible}
+    /* skills */
+    .skill-list{display:flex;flex-direction:column;gap:14px}
+    .skill-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+    .skill-name{font-size:.875rem;font-weight:600}
+    .skill-pct{font-size:.82rem;font-weight:700;color:var(--blue)}
+    .skill-bar{height:8px;border-radius:100px;background:#e5e7eb;overflow:hidden}
+    .skill-fill{height:100%;border-radius:100px;transition:width .8s ease}
+    /* lessons */
+    .lesson-list{display:flex;flex-direction:column;gap:10px}
+    .lesson-item{display:flex;align-items:flex-start;gap:14px;padding:14px;border-radius:14px;border:1px solid var(--border);transition:all var(--transition)}
+    .lesson-item:hover{border-color:var(--blue);background:var(--blue-light)}
+    .lesson-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px}
+    .dot-done{background:var(--green)}.dot-upcoming{background:var(--blue)}
+    .lesson-title{font-size:.875rem;font-weight:600;margin-bottom:2px}
+    .lesson-meta{font-size:.75rem;color:var(--ink-soft)}
+    .lesson-badge{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:100px;white-space:nowrap}
+    .lb-done{background:var(--green-bg);color:var(--green)}
+    .lb-up{background:var(--blue-light);color:var(--blue)}
+    /* tasks */
+    .task-list{display:flex;flex-direction:column;gap:8px}
+    .task-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);cursor:pointer;transition:all var(--transition);font-size:.875rem}
+    .task-item:hover{border-color:var(--blue)}
+    .task-item.done-task{opacity:.55;text-decoration:line-through}
+    .task-cb{width:20px;height:20px;border-radius:6px;border:2px solid var(--border-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all var(--transition);font-size:.7rem}
+    .task-item.done-task .task-cb{background:var(--green);border-color:var(--green);color:#fff}
+    .task-priority{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:auto;white-space:nowrap}
+    .tp-hi{background:var(--red-bg);color:var(--red)}
+    .tp-med{background:var(--orange-bg);color:var(--orange)}
+    .tp-lo{background:var(--green-bg);color:var(--green)}
+    /* next lesson dark card */
+    .nlc{background:var(--ink);border-radius:20px;padding:22px;color:#fff}
+    .nlc-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
+    .nlc-date{font-size:1.3rem;font-weight:800;letter-spacing:-.04em;margin-bottom:3px}
+    .nlc-topic{font-size:.875rem;color:rgba(255,255,255,.55);margin-bottom:18px}
+    .nlc-btns{display:flex;gap:8px}
+    .nlc-btn{padding:9px 18px;border-radius:100px;font-family:var(--font);font-size:.82rem;font-weight:600;cursor:pointer;border:none;transition:all var(--transition)}
+    .nlc-btn-p{background:var(--blue);color:#fff}
+    .nlc-btn-p:hover{background:#0f35c9}
+    .nlc-btn-g{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12)}
+    /* messages */
+    .msg-item{display:flex;gap:12px;padding:14px;border-radius:14px;border:1px solid var(--border);margin-bottom:10px}
+    .msg-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;flex-shrink:0}
+    .msg-meta{font-size:.72rem;color:var(--ink-faint);margin-bottom:2px}
+    .msg-text{font-size:.875rem;line-height:1.55}
+    .msg-unread{border-left:3px solid var(--blue)}
+    /* quick actions */
+    .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .qa-btn{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;text-decoration:none;transition:all var(--transition);font-size:.875rem;font-weight:600;color:var(--ink)}
+    .qa-btn:hover{border-color:var(--blue);background:var(--blue-light);color:var(--blue)}
+    /* not-registered banner */
+    .no-user-banner{background:var(--orange-bg);border:1px solid rgba(194,65,12,.2);border-radius:16px;padding:18px 22px;margin-bottom:20px;font-size:.9rem;color:var(--orange);display:flex;align-items:center;gap:12px}
+    .no-user-banner a{color:var(--blue);font-weight:600}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner-d">
+    <a href="index.html" class="nav-logo">Marek Šollar <span>· OSP</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Domů</a></li>
+      <li><a href="rodice.html">Pro rodiče</a></li>
+      <li><a href="stres.html">Jak na stres</a></li>
+      <li><a href="portal.html">✏️ Procvičovat</a></li>
+      <li><a href="dashboard.html" class="active">Můj pokrok</a></li>
+      <li><a href="admin.html">⚙️ Admin</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:34px;height:34px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem" id="navAvatar">?</div>
+      <span style="font-size:.875rem;font-weight:600" id="navName">—</span>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap dash-layout">
+
+  <div id="noUserBanner" class="no-user-banner" style="display:none">
+    ⚠️ Nejsi zaregistrovaný/á. <a href="index.html#booking">Vyplň formulář na hlavní stránce</a> a data se propojí automaticky. Níže vidíš ukázkový dashboard.
+  </div>
+
+  <!-- WELCOME -->
+  <div class="welcome-bar">
+    <div class="welcome-left">
+      <h2 id="welcomeH">Ahoj! 👋</h2>
+      <p id="welcomeSub">Pokračuješ skvěle — jsi na cestě k svému cílovému percentilu.</p>
+      <div class="countdown-pill">⏰ Do OSP (25. 4.) zbývá <strong id="countdown">—</strong> dní</div>
+    </div>
+    <div class="welcome-right">
+      <div class="wstat"><div class="wstat-num">7</div><div class="wstat-label">lekcí absolvováno</div></div>
+      <div class="wstat"><div class="wstat-num" id="currentPct">68.</div><div class="wstat-label">aktuální percentil</div></div>
+      <div class="wstat"><div class="wstat-num" id="targetPct">80.</div><div class="wstat-label">cílový percentil</div></div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g4">
+    <div class="card"><div class="card-title">Percentil OSP</div><div class="kpi-num" id="kpiPct">68.</div><div class="kpi-sub">aktuální odhadovaný</div><div class="badge bg-green">↑ +14 od začátku</div></div>
+    <div class="card"><div class="card-title">Úspěšnost úloh</div><div class="kpi-num">74%</div><div class="kpi-sub">ze všech procvičených</div><div class="badge bg-green">↑ +8 % tento týden</div></div>
+    <div class="card"><div class="card-title">Hodiny přípravy</div><div class="kpi-num">14,5</div><div class="kpi-sub">celkem s lektorem</div><div class="badge bg-blue">→ plán: 20 h celkem</div></div>
+    <div class="card"><div class="card-title">Úlohy splněny</div><div class="kpi-num">312</div><div class="kpi-sub">ze 800+ v bance</div><div class="badge bg-green">↑ 48 tento týden</div></div>
+  </div>
+
+  <!-- CHART + SKILLS -->
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">Vývoj percentilu v čase</div>
+      <svg class="chart" viewBox="0 0 440 160">
+        <defs><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1847f0" stop-opacity=".15"/><stop offset="100%" stop-color="#1847f0" stop-opacity="0"/></linearGradient></defs>
+        <line x1="0" y1="40" x2="440" y2="40" stroke="#e5e7eb" stroke-width="1"/>
+        <line x1="0" y1="80" x2="440" y2="80" stroke="#e5e7eb" stroke-width="1"/>
+        <line x1="0" y1="120" x2="440" y2="120" stroke="#e5e7eb" stroke-width="1"/>
+        <text x="0" y="38" font-size="9" fill="#adadba">90</text>
+        <text x="0" y="78" font-size="9" fill="#adadba">70</text>
+        <text x="0" y="118" font-size="9" fill="#adadba">50</text>
+        <path d="M40,120 L100,108 L160,96 L220,88 L280,80 L340,68 L400,56 L440,56 L440,140 L40,140 Z" fill="url(#gr)"/>
+        <polyline points="40,120 100,108 160,96 220,88 280,80 340,68 400,56" fill="none" stroke="#1847f0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="40" cy="120" r="4" fill="#1847f0"/><circle cx="100" cy="108" r="4" fill="#1847f0"/><circle cx="160" cy="96" r="4" fill="#1847f0"/>
+        <circle cx="220" cy="88" r="4" fill="#1847f0"/><circle cx="280" cy="80" r="4" fill="#1847f0"/><circle cx="340" cy="68" r="4" fill="#1847f0"/>
+        <circle cx="400" cy="56" r="5" fill="#1847f0" stroke="#fff" stroke-width="2"/>
+        <line x1="0" y1="48" x2="440" y2="48" stroke="#16a34a" stroke-width="1" stroke-dasharray="6,4"/>
+        <text x="396" y="44" font-size="9" fill="#16a34a" font-weight="600">Cíl</text>
+        <text x="24" y="155" font-size="9" fill="#adadba">Říj</text><text x="88" y="155" font-size="9" fill="#adadba">Lis</text>
+        <text x="148" y="155" font-size="9" fill="#adadba">Pro</text><text x="208" y="155" font-size="9" fill="#adadba">Led</text>
+        <text x="268" y="155" font-size="9" fill="#adadba">Úno</text><text x="328" y="155" font-size="9" fill="#adadba">Bře</text>
+        <text x="388" y="155" font-size="9" fill="#adadba">Nyní</text>
+      </svg>
+    </div>
+    <div class="card">
+      <div class="card-title">Výkonnost podle oblasti</div>
+      <div class="skill-list">
+        <div><div class="skill-header"><span class="skill-name">Analogie</span><span class="skill-pct">82%</span></div><div class="skill-bar"><div class="skill-fill" style="width:82%;background:#1847f0"></div></div></div>
+        <div><div class="skill-header"><span class="skill-name">Logické řady</span><span class="skill-pct">76%</span></div><div class="skill-bar"><div class="skill-fill" style="width:76%;background:#3b64f5"></div></div></div>
+        <div><div class="skill-header"><span class="skill-name">Logika</span><span class="skill-pct">68%</span></div><div class="skill-bar"><div class="skill-fill" style="width:68%;background:#6d28d9"></div></div></div>
+        <div><div class="skill-header"><span class="skill-name">Argumentace</span><span class="skill-pct">58%</span></div><div class="skill-bar"><div class="skill-fill" style="width:58%;background:#ea580c"></div></div></div>
+        <div><div class="skill-header"><span class="skill-name">Porozumění textu</span><span class="skill-pct">71%</span></div><div class="skill-bar"><div class="skill-fill" style="width:71%;background:#0891b2"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LESSONS + SIDEBAR -->
+  <div class="g3">
+    <div class="card">
+      <div class="card-title">Lekce</div>
+      <div class="lesson-list">
+        <div class="lesson-item"><div class="lesson-dot dot-done"></div><div style="flex:1"><div class="lesson-title">Analogie — základy</div><div class="lesson-meta">15. 1. 2026 · 60 min</div></div><span class="lesson-badge lb-done">Hotovo</span></div>
+        <div class="lesson-item"><div class="lesson-dot dot-done"></div><div style="flex:1"><div class="lesson-title">Logické řady — vzorce</div><div class="lesson-meta">22. 1. 2026 · 60 min</div></div><span class="lesson-badge lb-done">Hotovo</span></div>
+        <div class="lesson-item"><div class="lesson-dot dot-done"></div><div style="flex:1"><div class="lesson-title">Argumentace — klamy</div><div class="lesson-meta">5. 2. 2026 · 60 min</div></div><span class="lesson-badge lb-done">Hotovo</span></div>
+        <div class="lesson-item"><div class="lesson-dot dot-upcoming"></div><div style="flex:1"><div class="lesson-title">Porozumění textu</div><div class="lesson-meta">26. 3. 2026 · 60 min</div></div><span class="lesson-badge lb-up">Nadcházející</span></div>
+        <div class="lesson-item"><div class="lesson-dot dot-upcoming"></div><div style="flex:1"><div class="lesson-title">Simulace — plný test</div><div class="lesson-meta">9. 4. 2026 · 90 min</div></div><span class="lesson-badge lb-up">Nadcházející</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="nlc">
+        <div class="nlc-label">Příští lekce</div>
+        <div class="nlc-date">St 26. března · 17:00</div>
+        <div class="nlc-topic">Porozumění textu — strategie čtení</div>
+        <div class="nlc-btns">
+          <button class="nlc-btn nlc-btn-p" onclick="alert('Odkaz na Zoom: zoom.us/j/example — přijde e-mailem před lekcí.')">Zoom link</button>
+          <button class="nlc-btn nlc-btn-g" onclick="alert('Lekce přidána do kalendáře (demo).')">+ Kalendář</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Zprávy od Marka</div>
+        <div class="msg-item msg-unread"><div class="msg-avatar">MŠ</div><div><div class="msg-meta">Marek Šollar · dnes</div><div class="msg-text">Skvělá práce! Před příší lekcí si procvič argumentační klamy — pošlu ti odkaz.</div></div></div>
+        <div class="msg-item"><div class="msg-avatar">MŠ</div><div><div class="msg-meta">Marek Šollar · 20. 3.</div><div class="msg-text">Rozbor simulace ti posílám e-mailem. Argumentace je slabé místo — zaměříme se na to.</div></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Úkoly do příští lekce</div>
+        <div class="task-list" id="taskList">
+          <div class="task-item" onclick="toggleTask(this)"><div class="task-cb"></div>Procvičit 20 argumentačních úloh<span class="task-priority tp-hi">Priorita</span></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="task-cb"></div>Přečíst materiály k porozumění textu<span class="task-priority tp-med">Střední</span></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="task-cb"></div>Zopakovat logické klamy<span class="task-priority tp-med">Střední</span></div>
+          <div class="task-item done-task" onclick="toggleTask(this)"><div class="task-cb">✓</div>Absolvovat diagnostický re-test<span class="task-priority tp-lo">Splněno</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Rychlé akce</div>
+        <div class="qa-grid">
+          <a href="portal.html" class="qa-btn">✏️ Procvičovat</a>
+          <a href="stres.html" class="qa-btn">🧘 Jak na stres</a>
+          <a href="index.html#booking" class="qa-btn">📅 Lekce</a>
+          <a href="rodice.html" class="qa-btn">👨‍👩‍👧 Pro rodiče</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Load user from localStorage
+  function loadUser(){
+    try{
+      const u=JSON.parse(localStorage.getItem('osp_user')||'{}');
+      if(u.name){
+        document.getElementById('navAvatar').textContent=(u.name[0]+(u.surname?u.surname[0]:'')).toUpperCase();
+        document.getElementById('navName').textContent=u.name+' '+u.surname;
+        document.getElementById('welcomeH').textContent='Ahoj, '+u.name+'! 👋';
+        document.getElementById('welcomeSub').textContent='Tvůj cíl: '+u.percentil+'. percentil'+(u.faculty?' — '+u.faculty:'');
+        document.getElementById('currentPct').textContent='68.';
+        document.getElementById('targetPct').textContent=u.percentil+'.';
+        document.getElementById('kpiPct').textContent='68.';
+      } else {
+        document.getElementById('noUserBanner').style.display='flex';
+        document.getElementById('navAvatar').textContent='?';
+        document.getElementById('navName').textContent='Host';
+      }
+    }catch(e){ document.getElementById('noUserBanner').style.display='flex'; }
+  }
+  loadUser();
+
+  // Countdown to 25 April 2026
+  const target=new Date('2026-04-25T08:00:00');
+  const days=Math.max(0,Math.ceil((target-new Date())/(1000*60*60*24)));
+  document.getElementById('countdown').textContent=days;
+
+  // Tasks persist in localStorage
+  const TASK_KEY='osp_tasks';
+  function saveTasks(){
+    const states=[...document.querySelectorAll('.task-item')].map(t=>t.classList.contains('done-task'));
+    localStorage.setItem(TASK_KEY,JSON.stringify(states));
+  }
+  function loadTasks(){
+    try{
+      const s=JSON.parse(localStorage.getItem(TASK_KEY)||'[]');
+      document.querySelectorAll('.task-item').forEach((t,i)=>{
+        if(s[i]){t.classList.add('done-task');t.querySelector('.task-cb').textContent='✓';}
+      });
+    }catch(e){}
+  }
+  loadTasks();
+  function toggleTask(el){
+    el.classList.toggle('done-task');
+    el.querySelector('.task-cb').textContent=el.classList.contains('done-task')?'✓':'';
+    saveTasks();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jak na stres před OSP — Marek Šollar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#111116;--ink-soft:#64646e;--ink-faint:#adadba;--bg:#f7f7f5;--white:#fff;--blue:#1847f0;--blue-light:#eaedff;--blue-glow:rgba(24,71,240,.15);--green:#166534;--green-bg:#dcfce7;--red:#9f1239;--red-bg:#ffe4e6;--purple:#6d28d9;--purple-bg:#ede9fe;--orange:#c2410c;--orange-bg:#fff7ed;--border:rgba(17,17,22,.07);--border-strong:rgba(17,17,22,.14);--shadow-sm:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.04);--shadow-md:0 4px 6px rgba(0,0,0,.04),0 20px 48px rgba(0,0,0,.08);--transition:.22s cubic-bezier(.4,0,.2,1);--font:'Plus Jakarta Sans',-apple-system,sans-serif}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:1100px;margin:0 auto;padding:0 44px;position:relative;z-index:1}
+    @media(max-width:700px){.wrap{padding:0 20px}}
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+    .eyebrow::before{content:'';width:16px;height:2px;background:var(--blue);border-radius:2px}
+    .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font);font-size:.9375rem;font-weight:600;padding:13px 26px;border-radius:100px;text-decoration:none;border:none;cursor:pointer;transition:all var(--transition);white-space:nowrap}
+    .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#0f35c9;transform:translateY(-1px);box-shadow:0 6px 24px var(--blue-glow)}
+    .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--border-strong)}.btn-ghost:hover{border-color:var(--ink);background:var(--white)}
+    .btn-sm{padding:9px 18px;font-size:.84rem}
+    nav{position:sticky;top:0;z-index:900;background:rgba(247,247,245,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:20px}
+    .nav-logo{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);text-decoration:none}.nav-logo span{color:var(--blue)}
+    .nav-links{display:flex;gap:22px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--ink-soft);text-decoration:none;transition:color var(--transition)}
+    .nav-links a:hover,.nav-links a.active{color:var(--blue);font-weight:600}
+    @media(max-width:860px){.nav-links{display:none}}
+    /* HERO */
+    .hero{padding:96px 0 72px;text-align:center;position:relative;overflow:hidden}
+    .hero-blob{position:absolute;width:600px;height:400px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#1847f0);filter:blur(140px);opacity:.07;top:-100px;left:50%;transform:translateX(-50%);pointer-events:none}
+    .hero-emoji{font-size:4rem;margin-bottom:20px;display:block}
+    .hero h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:800;line-height:1.06;letter-spacing:-.04em;margin-bottom:20px;max-width:700px;margin-left:auto;margin-right:auto}
+    .hero h1 em{font-style:normal;color:var(--blue)}
+    .hero-sub{font-size:1.05rem;color:var(--ink-soft);line-height:1.78;max-width:560px;margin:0 auto 36px}
+    .chapters{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+    .ch-btn{padding:8px 18px;border-radius:100px;border:1.5px solid var(--border);background:var(--white);font-family:var(--font);font-size:.82rem;font-weight:600;cursor:pointer;color:var(--ink-soft);transition:all var(--transition);text-decoration:none}
+    .ch-btn:hover{border-color:var(--blue);background:var(--blue-light);color:var(--blue)}
+    /* SECTIONS */
+    .sec{padding:80px 0;border-bottom:1px solid var(--border)}
+    .sec:last-of-type{border-bottom:none}
+    .sec h2{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-top:6px;margin-bottom:32px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:720px){.grid2{grid-template-columns:1fr}}
+    .tip-card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:24px;transition:all var(--transition)}
+    .tip-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
+    .tip-card.green{border-left:3px solid #16a34a}.tip-card.blue{border-left:3px solid var(--blue)}.tip-card.purple{border-left:3px solid var(--purple)}.tip-card.orange{border-left:3px solid #ea580c}
+    .tip-icon{font-size:1.6rem;margin-bottom:12px}
+    .tip-card h3{font-size:.95rem;font-weight:700;margin-bottom:8px}
+    .tip-card p{font-size:.875rem;color:var(--ink-soft);line-height:1.7}
+    .tip-card p strong{color:var(--ink)}
+    /* BREATHING */
+    .breath-box{background:var(--ink);border-radius:24px;padding:40px;text-align:center;margin:32px 0}
+    .breath-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:24px}
+    .breath-circle{width:120px;height:120px;border-radius:50%;background:var(--blue);margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:#fff;cursor:pointer;transition:all 1s ease;position:relative}
+    .breath-circle::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(24,71,240,.3);transition:all 1s ease}
+    .breath-circle.inhale{transform:scale(1.35);background:#1955ff}.breath-circle.inhale::after{inset:-16px;border-color:rgba(24,71,240,.5)}
+    .breath-circle.hold{transform:scale(1.35);background:#0f35c9}.breath-circle.exhale{transform:scale(1);background:var(--blue)}
+    .breath-instr{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:8px}
+    .breath-cnt{font-size:2.5rem;font-weight:800;color:#3b64f5;line-height:1;margin-bottom:20px;min-height:3rem}
+    .breath-prog{font-size:.8rem;color:rgba(255,255,255,.35);margin-bottom:20px}
+    .breath-btn{padding:11px 28px;border-radius:100px;background:var(--blue);color:#fff;border:none;font-family:var(--font);font-size:.9rem;font-weight:600;cursor:pointer;transition:all var(--transition)}
+    .breath-btn:hover{background:#0f35c9}
+    /* TIMELINE */
+    .timeline{display:flex;flex-direction:column;gap:0;position:relative}
+    .timeline::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:2px;background:var(--border)}
+    .tl-item{display:flex;gap:20px;padding:0 0 28px;position:relative}
+    .tl-dot{width:46px;height:46px;border-radius:50%;background:var(--white);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;position:relative;z-index:1}
+    .tl-dot.tl-active{background:var(--blue);border-color:var(--blue)}
+    .tl-body{padding-top:8px;flex:1}
+    .tl-time{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
+    .tl-title{font-size:.95rem;font-weight:700;margin-bottom:4px}
+    .tl-desc{font-size:.84rem;color:var(--ink-soft);line-height:1.6}
+    /* CHECKLIST */
+    .cl-list{display:flex;flex-direction:column;gap:10px}
+    .cl-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;transition:all var(--transition);font-size:.875rem;user-select:none}
+    .cl-item:hover{border-color:var(--blue)}
+    .cl-item.checked{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+    .cl-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--border-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all var(--transition);font-size:.75rem}
+    .cl-item.checked .cl-box{background:var(--green);border-color:var(--green);color:#fff}
+    .cl-progress{margin-top:16px;font-size:.875rem;color:var(--ink-soft)}
+    /* QUOTES */
+    .quotes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    @media(max-width:720px){.quotes-grid{grid-template-columns:1fr}}
+    .q-card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:24px;text-align:center}
+    .q-em{font-size:2rem;margin-bottom:12px}
+    .q-text{font-size:.95rem;font-weight:600;line-height:1.5;margin-bottom:8px}
+    .q-note{font-size:.78rem;color:var(--ink-faint)}
+    /* CTA */
+    .cta-strip{background:var(--blue);border-radius:24px;padding:48px;text-align:center;margin:60px 0 0}
+    .cta-strip h2{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;letter-spacing:-.04em;color:#fff;margin-bottom:14px}
+    .cta-strip p{font-size:.975rem;color:rgba(255,255,255,.7);margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto}
+    .cta-strip .btn{background:#fff;color:var(--blue)}.cta-strip .btn:hover{background:#eef0ff}
+    footer{background:var(--ink);padding:44px 0;text-align:center}
+    .footer-logo{font-size:1.1rem;font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:10px}.footer-logo span{color:#3b64f5}
+    footer p{font-size:.82rem;color:rgba(255,255,255,.35);line-height:1.8}
+    footer a{color:rgba(255,255,255,.35);text-decoration:none;transition:color var(--transition)}.footer a:hover{color:#fff}
+    .footer-hr{border:none;border-top:1px solid rgba(255,255,255,.06);margin:20px auto;max-width:300px}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="wrap nav-inner">
+    <a href="index.html" class="nav-logo">Marek Šollar <span>· OSP</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Domů</a></li>
+      <li><a href="rodice.html">Pro rodiče</a></li>
+      <li><a href="stres.html" class="active">Jak na stres</a></li>
+      <li><a href="portal.html">✏️ Procvičovat</a></li>
+      <li><a href="dashboard.html">Můj pokrok</a></li>
+      <li><a href="admin.html">⚙️ Admin</a></li>
+    </ul>
+    <a href="index.html#booking" class="btn btn-primary btn-sm">Rezervovat →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-blob"></div>
+  <div class="wrap">
+    <span class="hero-emoji">🧘</span>
+    <h1>Stres před OSP je normální.<br>Nechat ho <em>řídit tě</em> — ne.</h1>
+    <p class="hero-sub">Průvodce mentální přípravou od toho, kdo si tím prošel. Praktické techniky, ne prázdné rady.</p>
+    <div class="chapters reveal">
+      <a href="#proc" class="ch-btn">Proč stres škodí</a>
+      <a href="#techniky" class="ch-btn">Techniky</a>
+      <a href="#dech" class="ch-btn">Dechové cvičení</a>
+      <a href="#dend" class="ch-btn">Den D</a>
+      <a href="#checklist" class="ch-btn">Checklist</a>
+      <a href="#mindset" class="ch-btn">Mindset</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="sec" id="proc">
+    <div class="eyebrow reveal">Proč záleží</div>
+    <h2 class="reveal">Co stres dělá s tvým mozkem při testu</h2>
+    <div class="grid2">
+      <div class="tip-card blue reveal d1"><div class="tip-icon">🧠</div><h3>Stres blokuje pracovní paměť</h3><p>Kortizol <strong>zmenšuje kapacitu pracovní paměti</strong>. Úlohy, které umíš, najednou vypadají neřešitelně. Není to neschopnost — je to chemie.</p></div>
+      <div class="tip-card orange reveal d2"><div class="tip-icon">⏱️</div><h3>Stres deformuje vnímání času</h3><p>Pod stresem se čas zdá plynout <strong>2× rychleji</strong>. Studenti pak zbytečně přeskakují úlohy a dělají chyby z nepozornosti.</p></div>
+      <div class="tip-card green reveal d1"><div class="tip-icon">✅</div><h3>Mírný stres naopak pomáhá</h3><p>Cílem není nulový stres. <strong>Optimální úroveň</strong> aktivuje pozornost a rychlost. Naučíme se ho řídit, ne eliminovat.</p></div>
+      <div class="tip-card purple reveal d2"><div class="tip-icon">🎯</div><h3>Příprava snižuje stres o 60 %</h3><p><strong>Pocit kontroly</strong> (= vím, co přijde) dramaticky snižuje stresovou reakci. Proto je simulace testu tak klíčová.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="techniky">
+    <div class="eyebrow reveal">Techniky</div>
+    <h2 class="reveal">Co skutečně funguje — a co ne</h2>
+    <div class="grid2">
+      <div class="tip-card green reveal d1"><div class="tip-icon">👍</div><h3>Řízené dýchání (4-7-8)</h3><p>Nádech 4s, zadržení 7s, výdech 8s. <strong>Aktivuje parasympatický nervový systém</strong> do 90 vteřin.</p></div>
+      <div class="tip-card green reveal d2"><div class="tip-icon">👍</div><h3>Přeznačení pocitů</h3><p>Místo „jsem nervózní" říkej „jsem nabuzený/á". <strong>Mozek reaguje jinak</strong> — vzrušení zvyšuje výkon.</p></div>
+      <div class="tip-card green reveal d1"><div class="tip-icon">👍</div><h3>Rituál před testem</h3><p>Stejná snídaně, stejná trasa, stejná playlist. <strong>Rutina signalizuje mozku bezpečí</strong> a spouští výkonnostní mód.</p></div>
+      <div class="tip-card orange reveal d2"><div class="tip-icon">👎</div><h3>Poslední chvíle drilování</h3><p>Den před testem není čas na nové úlohy. Mozek potřebuje <strong>konsolidaci paměti přes spánek</strong>.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="dech">
+    <div class="eyebrow reveal">Interaktivní cvičení</div>
+    <h2 class="reveal">Box Breathing — vyzkoušej teď</h2>
+    <p class="reveal" style="color:var(--ink-soft);margin-bottom:28px;max-width:560px">Technika používaná vojáky, piloty a chirurgy. Do 2 minut sníží tepovou frekvenci a zklidní mysl. Stačí 3 kola.</p>
+    <div class="breath-box reveal">
+      <div class="breath-label">Box Breathing — 4 · 4 · 4 · 4</div>
+      <div class="breath-circle" id="breathCircle">Start</div>
+      <div class="breath-instr" id="breathInstr">Připrav se</div>
+      <div class="breath-cnt" id="breathCnt"></div>
+      <div class="breath-prog" id="breathProg">Kolo 0 / 3</div>
+      <button class="breath-btn" id="breathBtn" onclick="startBreath()">▶ Spustit cvičení</button>
+    </div>
+  </section>
+
+  <section class="sec" id="dend">
+    <div class="eyebrow reveal">Den D</div>
+    <h2 class="reveal">Ideální plán dne testu</h2>
+    <div class="timeline reveal">
+      <div class="tl-item"><div class="tl-dot tl-active">☀️</div><div class="tl-body"><div class="tl-time">Ráno — 2h před testem</div><div class="tl-title">Vstát, snídat, pohyb</div><div class="tl-desc">Lehká snídaně (komplexní sacharidy). 10 minut svěžího vzduchu. Žádné zprávy, žádný Instagram.</div></div></div>
+      <div class="tl-item"><div class="tl-dot">📚</div><div class="tl-body"><div class="tl-time">90 minut před testem</div><div class="tl-title">Žádné učení — jen připomenutí</div><div class="tl-desc">Přečti si 2–3 věty ze svých poznámek. Pak zavři knížky.</div></div></div>
+      <div class="tl-item"><div class="tl-dot">🚌</div><div class="tl-body"><div class="tl-time">Cesta na místo</div><div class="tl-title">Hudba, ne podcast</div><div class="tl-desc">Oblíbená playlist — ideálně instrumentální. Vyraz s rezervou.</div></div></div>
+      <div class="tl-item"><div class="tl-dot tl-active">🏛️</div><div class="tl-body"><div class="tl-time">Příchod — 30 min před</div><div class="tl-title">Usadit se, dechové cvičení</div><div class="tl-desc">3× box breathing. Připrav pomůcky. Nesrovnávej se s ostatními.</div></div></div>
+      <div class="tl-item"><div class="tl-dot tl-active">✏️</div><div class="tl-body"><div class="tl-time">Během testu</div><div class="tl-title">Nejdřív co umíš, pak co neumíš</div><div class="tl-desc">První průchod — odpověz na vše, co ti jde snadno. Druhý průchod — těžší úlohy.</div></div></div>
+      <div class="tl-item"><div class="tl-dot">🎉</div><div class="tl-body"><div class="tl-time">Po testu</div><div class="tl-title">Odměna — bez rozebírání</div><div class="tl-desc">Nerozbírej odpovědi se spolužáky. Jdi na něco hezkého.</div></div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="checklist">
+    <div class="eyebrow reveal">Checklist</div>
+    <h2 class="reveal">Co zařídit den před testem</h2>
+    <p class="reveal" style="color:var(--ink-soft);margin-bottom:20px">Klikni na každou položku po splnění — ukládá se automaticky:</p>
+    <div class="cl-list reveal" id="checklistEl">
+      <div class="cl-item" onclick="toggleCL(this,0)"><div class="cl-box"></div>Ověřit přesnou adresu a trasu na místo konání</div>
+      <div class="cl-item" onclick="toggleCL(this,1)"><div class="cl-box"></div>Nastavit budík (+ záložní) na správný čas</div>
+      <div class="cl-item" onclick="toggleCL(this,2)"><div class="cl-box"></div>Připravit platný doklad totožnosti (OP nebo pas)</div>
+      <div class="cl-item" onclick="toggleCL(this,3)"><div class="cl-box"></div>Připravit potvrzení o registraci na SCIO</div>
+      <div class="cl-item" onclick="toggleCL(this,4)"><div class="cl-box"></div>Přibalit psací potřeby (tužky, guma, propisky)</div>
+      <div class="cl-item" onclick="toggleCL(this,5)"><div class="cl-box"></div>Naplánovat lehkou snídani (ovesná kaše, vejce…)</div>
+      <div class="cl-item" onclick="toggleCL(this,6)"><div class="cl-box"></div>Jít spát nejpozději ve 23:00</div>
+      <div class="cl-item" onclick="toggleCL(this,7)"><div class="cl-box"></div>Zavřít učebnice — dnes se neučíme</div>
+      <div class="cl-item" onclick="toggleCL(this,8)"><div class="cl-box"></div>Připravit oblíbenou hudbu na cestu</div>
+      <div class="cl-item" onclick="toggleCL(this,9)"><div class="cl-box"></div>Dostatečně se napít (dehydratace = horší výkon)</div>
+    </div>
+    <div class="cl-progress reveal" id="clProgress"></div>
+  </section>
+
+  <section class="sec" id="mindset">
+    <div class="eyebrow reveal">Mindset</div>
+    <h2 class="reveal">Tři myšlenky na krizové momenty</h2>
+    <div class="quotes-grid">
+      <div class="q-card reveal d1"><div class="q-em">🌊</div><div class="q-text">„Stres je energie. Já ji řídím, ona neřídí mě."</div><div class="q-note">Připomeň si před začátkem testu</div></div>
+      <div class="q-card reveal d2"><div class="q-em">🧩</div><div class="q-text">„Jedna těžká úloha nerozhoduje o výsledku."</div><div class="q-note">Když se zasekneme — jdeme dál</div></div>
+      <div class="q-card reveal d3"><div class="q-em">🏁</div><div class="q-text">„Připravoval/a jsem se. Teď jen ukážu, co umím."</div><div class="q-note">Ráno před vstupem do sálu</div></div>
+    </div>
+  </section>
+
+  <div class="cta-strip reveal">
+    <h2>Chceš se připravit i mentálně?</h2>
+    <p>Stresový management je součástí každého mého kurzu — zdarma. Začni první lekcí bez závazků.</p>
+    <a href="index.html#booking" class="btn">Rezervovat první lekci zdarma →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-logo">Marek Šollar <span>OSP</span></div>
+    <p>marek.sollar@doucovaniosp.cz · +420 777 123 456</p>
+    <hr class="footer-hr">
+    <p><a href="index.html">Domů</a> · <a href="rodice.html">Pro rodiče</a> · <a href="portal.html">Portál</a> · <a href="dashboard.html">Dashboard</a></p>
+  </div>
+</footer>
+
+<script>
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Breathing
+  let bRunning=false,bTimer=null,bRound=0,bMax=3;
+  const bPhases=[{label:'Nádech',cls:'inhale',dur:4},{label:'Zadrž',cls:'hold',dur:4},{label:'Výdech',cls:'exhale',dur:4},{label:'Zadrž',cls:'hold',dur:4}];
+  function startBreath(){
+    if(bRunning)return;
+    bRunning=true;bRound=0;
+    document.getElementById('breathBtn').style.display='none';
+    runPhase(0);
+  }
+  function runPhase(pi){
+    if(bRound>=bMax){
+      document.getElementById('breathCircle').textContent='✓';
+      document.getElementById('breathInstr').textContent='Skvěle! Cítíš rozdíl?';
+      document.getElementById('breathCnt').textContent='';
+      document.getElementById('breathProg').textContent='Hotovo ✓';
+      const btn=document.getElementById('breathBtn');btn.style.display='';btn.textContent='↺ Opakovat';
+      bRunning=false;return;
+    }
+    const ph=bPhases[pi];
+    const circle=document.getElementById('breathCircle');
+    circle.className='breath-circle '+ph.cls;
+    circle.textContent=ph.label[0];
+    document.getElementById('breathInstr').textContent=ph.label;
+    document.getElementById('breathProg').textContent=`Kolo ${bRound+1} / ${bMax}`;
+    let t=ph.dur;
+    document.getElementById('breathCnt').textContent=t;
+    bTimer=setInterval(()=>{
+      t--;document.getElementById('breathCnt').textContent=t>0?t:'';
+      if(t<=0){clearInterval(bTimer);const next=(pi+1)%bPhases.length;if(next===0)bRound++;runPhase(next);}
+    },1000);
+  }
+
+  // Checklist with localStorage
+  const CL_KEY='osp_stres_checklist';
+  function loadCL(){
+    try{
+      const s=JSON.parse(localStorage.getItem(CL_KEY)||'[]');
+      document.querySelectorAll('.cl-item').forEach((el,i)=>{
+        if(s[i]){el.classList.add('checked');el.querySelector('.cl-box').textContent='✓';}
+      });
+    }catch(e){}
+    updateCLProgress();
+  }
+  function saveCL(){
+    const s=[...document.querySelectorAll('.cl-item')].map(el=>el.classList.contains('checked'));
+    localStorage.setItem(CL_KEY,JSON.stringify(s));
+  }
+  function toggleCL(el,idx){
+    el.classList.toggle('checked');
+    el.querySelector('.cl-box').textContent=el.classList.contains('checked')?'✓':'';
+    saveCL();updateCLProgress();
+  }
+  function updateCLProgress(){
+    const all=document.querySelectorAll('.cl-item').length;
+    const done=document.querySelectorAll('.cl-item.checked').length;
+    const p=document.getElementById('clProgress');
+    p.textContent=done+' / '+all+' splněno'+(done===all?' — Jsi připraven/a! 🎉':'');
+  }
+  loadCL();
+</script>
+</body>
+</html>

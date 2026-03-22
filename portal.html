@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Procvičovací portál OSP — Marek Šollar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#111116;--ink-soft:#64646e;--ink-faint:#adadba;--bg:#f7f7f5;--white:#fff;--blue:#1847f0;--blue-mid:#3b64f5;--blue-light:#eaedff;--green:#166534;--green-bg:#dcfce7;--red:#9f1239;--red-bg:#ffe4e6;--orange:#c2410c;--orange-bg:#fff7ed;--border:rgba(17,17,22,.07);--border-strong:rgba(17,17,22,.14);--shadow-sm:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.04);--shadow-md:0 4px 6px rgba(0,0,0,.04),0 20px 48px rgba(0,0,0,.08);--transition:.22s cubic-bezier(.4,0,.2,1);--font:'Plus Jakarta Sans',-apple-system,sans-serif}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+    .wrap{max-width:1160px;margin:0 auto;padding:0 44px}
+    @media(max-width:700px){.wrap{padding:0 16px}}
+    nav{position:sticky;top:0;z-index:900;background:rgba(247,247,245,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:16px;flex-wrap:wrap}
+    .nav-logo{font-size:1rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+    .nav-logo span{color:var(--blue)}
+    .nav-links{display:flex;gap:22px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--ink-soft);text-decoration:none;transition:color var(--transition)}
+    .nav-links a:hover,.nav-links a.active{color:var(--blue);font-weight:600}
+    .btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:.84rem;font-weight:600;padding:9px 18px;border-radius:100px;text-decoration:none;border:none;cursor:pointer;transition:all var(--transition);white-space:nowrap}
+    .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#0f35c9}
+    .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--border-strong)}.btn-ghost:hover{border-color:var(--ink);background:var(--white)}
+    @media(max-width:860px){.nav-links{display:none}}
+    /* layout */
+    .portal-layout{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:28px 0 60px}
+    @media(max-width:860px){.portal-layout{grid-template-columns:1fr}}
+    /* sidebar */
+    .sidebar{display:flex;flex-direction:column;gap:16px}
+    .s-card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:18px}
+    .s-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px}
+    .f-btn{width:100%;padding:8px 12px;border-radius:10px;border:1.5px solid var(--border);background:transparent;font-family:var(--font);font-size:.82rem;cursor:pointer;color:var(--ink-soft);transition:all var(--transition);text-align:left;margin-bottom:6px}
+    .f-btn:last-child{margin-bottom:0}
+    .f-btn:hover{border-color:var(--blue);color:var(--blue)}
+    .f-btn.active{background:var(--blue-light);border-color:var(--blue);color:var(--blue);font-weight:600}
+    .diff-row{display:flex;gap:6px}
+    .d-btn{flex:1;padding:7px 4px;border-radius:10px;border:1.5px solid var(--border);background:transparent;font-family:var(--font);font-size:.78rem;cursor:pointer;color:var(--ink-soft);transition:all var(--transition);text-align:center;font-weight:600}
+    .d-btn:hover{border-color:var(--blue)}.d-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
+    .stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:.82rem}
+    .stat-row:last-child{border-bottom:none;padding-bottom:0}
+    .stat-label{color:var(--ink-soft)}.stat-val{font-weight:700}
+    .sv-blue{color:var(--blue)}.sv-green{color:var(--green)}.sv-red{color:var(--red)}
+    .prog-bar{height:6px;border-radius:100px;background:#e5e7eb;margin-top:10px}
+    .prog-fill{height:100%;border-radius:100px;background:var(--blue);transition:width .4s ease}
+    .prog-label{display:flex;justify-content:space-between;font-size:.7rem;color:var(--ink-faint);margin:6px 0}
+    .tip-card{background:var(--blue);border-radius:16px;padding:18px;font-size:.84rem;color:rgba(255,255,255,.85);line-height:1.65}
+    .tip-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px}
+    /* main */
+    .main-col{display:flex;flex-direction:column;gap:18px}
+    .test-header{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .th-info{font-size:.82rem;color:var(--ink-soft)}.th-info strong{color:var(--ink)}
+    .timer{font-size:1.6rem;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+    .timer.warn{color:var(--orange)}.timer.danger{color:var(--red)}
+    .th-btns{display:flex;gap:8px}
+    /* question card */
+    .q-card{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:30px;transition:all var(--transition)}
+    .q-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+    .type-badge{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:100px}
+    .tb-analogy{background:#ede9fe;color:#6d28d9}.tb-series{background:#fef3c7;color:#92400e}
+    .tb-logic{background:#dcfce7;color:#166534}.tb-argument{background:#fee2e2;color:#991b1b}
+    .tb-reading{background:#dbeafe;color:#1e40af}
+    .q-diff{font-size:.72rem;font-weight:700;color:var(--ink-faint)}.q-num{font-size:.72rem;color:var(--ink-faint);margin-left:auto}
+    .q-ctx{background:var(--bg);border-radius:12px;padding:14px;margin-bottom:18px;font-size:.9rem;color:var(--ink-soft);line-height:1.7;border-left:3px solid var(--border-strong)}
+    .q-text{font-size:1.05rem;font-weight:600;line-height:1.6;margin-bottom:22px}
+    .opts{display:flex;flex-direction:column;gap:10px}
+    .opt{display:flex;align-items:flex-start;gap:14px;padding:13px 16px;border-radius:14px;border:1.5px solid var(--border);cursor:pointer;transition:all var(--transition);font-size:.9rem;line-height:1.5}
+    .opt:hover:not(.disabled){border-color:var(--blue);background:var(--blue-light)}
+    .opt.sel{border-color:var(--blue);background:var(--blue-light)}
+    .opt.correct{border-color:#16a34a;background:var(--green-bg);color:var(--green)}
+    .opt.wrong{border-color:#dc2626;background:var(--red-bg);color:var(--red)}
+    .opt.disabled{cursor:default}
+    .opt-letter{width:28px;height:28px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;transition:all var(--transition)}
+    .opt.sel .opt-letter{background:var(--blue);border-color:var(--blue);color:#fff}
+    .opt.correct .opt-letter{background:#16a34a;border-color:#16a34a;color:#fff}
+    .opt.wrong .opt-letter{background:#dc2626;border-color:#dc2626;color:#fff}
+    .q-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+    .btn-check{padding:11px 24px;border-radius:12px;background:var(--ink);color:#fff;border:none;cursor:pointer;font-family:var(--font);font-size:.875rem;font-weight:600;transition:all var(--transition)}
+    .btn-check:hover{background:var(--blue)}
+    .btn-next{padding:11px 24px;border-radius:12px;background:var(--blue);color:#fff;border:none;cursor:pointer;font-family:var(--font);font-size:.875rem;font-weight:600;transition:all var(--transition);display:none}
+    .btn-next:hover{background:#0f35c9}
+    .btn-skip{padding:10px 18px;border-radius:12px;background:transparent;color:var(--ink-soft);border:1.5px solid var(--border);cursor:pointer;font-family:var(--font);font-size:.84rem;font-weight:500;transition:all var(--transition)}
+    .btn-skip:hover{border-color:var(--ink-soft)}
+    .explanation{margin-top:18px;padding:16px 18px;border-radius:14px;background:var(--bg);border:1px solid var(--border);display:none;font-size:.875rem;line-height:1.7;color:var(--ink-soft)}
+    .explanation.show{display:block}
+    /* result */
+    .result-screen{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:48px;text-align:center;display:none}
+    .result-screen.show{display:block}
+    .result-emoji{font-size:3.5rem;margin-bottom:16px}
+    .result-title{font-size:2rem;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
+    .result-sub{font-size:1rem;color:var(--ink-soft);margin-bottom:28px}
+    .result-stats{display:flex;justify-content:center;gap:40px;margin-bottom:28px;flex-wrap:wrap}
+    .rs-num{font-size:2rem;font-weight:800;color:var(--blue);letter-spacing:-.04em;line-height:1}
+    .rs-label{font-size:.8rem;color:var(--ink-soft);margin-top:4px}
+    .result-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="wrap nav-inner">
+    <a href="index.html" class="nav-logo">Marek Šollar <span>· OSP</span> <span style="font-weight:400;color:var(--ink-soft)">/ Portál</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Domů</a></li>
+      <li><a href="rodice.html">Pro rodiče</a></li>
+      <li><a href="stres.html">Jak na stres</a></li>
+      <li><a href="portal.html" class="active">✏️ Procvičovat</a></li>
+      <li><a href="dashboard.html">Můj pokrok</a></li>
+      <li><a href="admin.html">⚙️ Admin</a></li>
+    </ul>
+    <span style="font-size:.82rem;font-weight:600;color:var(--ink-soft)">Skóre: <strong id="navScore" style="color:var(--blue)">0 / 0</strong></span>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="portal-layout">
+    <aside class="sidebar">
+      <div class="s-card">
+        <div class="s-title">Typ úlohy</div>
+        <button class="f-btn active" onclick="setFilter('type','all',this)">🎯 Vše</button>
+        <button class="f-btn" onclick="setFilter('type','analogy',this)">🔗 Analogie</button>
+        <button class="f-btn" onclick="setFilter('type','series',this)">📈 Logické řady</button>
+        <button class="f-btn" onclick="setFilter('type','logic',this)">🧩 Logika</button>
+        <button class="f-btn" onclick="setFilter('type','argument',this)">💬 Argumentace</button>
+        <button class="f-btn" onclick="setFilter('type','reading',this)">📖 Porozumění textu</button>
+        <div class="s-title" style="margin-top:14px">Obtížnost</div>
+        <div class="diff-row">
+          <button class="d-btn active" onclick="setFilter('diff','all',this)">Vše</button>
+          <button class="d-btn" onclick="setFilter('diff','easy',this)">Lehká</button>
+          <button class="d-btn" onclick="setFilter('diff','medium',this)">Střední</button>
+          <button class="d-btn" onclick="setFilter('diff','hard',this)">Těžká</button>
+        </div>
+      </div>
+      <div class="s-card">
+        <div class="s-title">Statistiky relace</div>
+        <div class="stat-row"><span class="stat-label">Zodpovězeno</span><span class="stat-val sv-blue" id="st-ans">0</span></div>
+        <div class="stat-row"><span class="stat-label">Správně</span><span class="stat-val sv-green" id="st-ok">0</span></div>
+        <div class="stat-row"><span class="stat-label">Špatně</span><span class="stat-val sv-red" id="st-bad">0</span></div>
+        <div class="stat-row"><span class="stat-label">Přeskočeno</span><span class="stat-val" id="st-skip">0</span></div>
+        <div class="stat-row"><span class="stat-label">Úspěšnost</span><span class="stat-val sv-blue" id="st-pct">—</span></div>
+        <div class="prog-label"><span>Pokrok</span><span id="st-prog-txt">0 / 0</span></div>
+        <div class="prog-bar"><div class="prog-fill" id="st-bar" style="width:0%"></div></div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-label">💡 Tip od Marka</div>
+        <span id="tipText">U analogií vždy nejdříve definuj vztah v levém páru — pak hledej stejný vztah vpravo.</span>
+      </div>
+    </aside>
+
+    <main class="main-col">
+      <div class="test-header">
+        <div class="th-info">Úloha <strong id="qNumD">1</strong> z <strong id="qTotD">—</strong> &nbsp;·&nbsp; <span id="qTypeD">—</span></div>
+        <div class="timer" id="timerD">01:30</div>
+        <div class="th-btns">
+          <button class="btn btn-ghost" id="timerToggleBtn" onclick="toggleTimer()" style="padding:8px 16px;font-size:.82rem">⏸ Pauza</button>
+          <button class="btn btn-ghost" onclick="resetTimer()" style="padding:8px 14px;font-size:.82rem">↺</button>
+        </div>
+      </div>
+
+      <div class="q-card" id="qCard">
+        <div class="q-meta">
+          <span class="type-badge" id="qBadge">—</span>
+          <span class="q-diff" id="qDiff">—</span>
+          <span class="q-num" id="qNumB">—</span>
+        </div>
+        <div class="q-ctx" id="qCtx" style="display:none"></div>
+        <div class="q-text" id="qText">Načítání…</div>
+        <div class="opts" id="optsContainer"></div>
+        <div class="q-actions">
+          <button class="btn-check" id="btnCheck" onclick="checkAnswer()">Zkontrolovat</button>
+          <button class="btn-next" id="btnNext" onclick="nextQ()">Další úloha →</button>
+          <button class="btn-skip" onclick="skipQ()">Přeskočit</button>
+        </div>
+        <div class="explanation" id="expl"></div>
+      </div>
+
+      <div class="result-screen" id="resultScreen">
+        <div class="result-emoji" id="resEmoji">🎉</div>
+        <div class="result-title" id="resTitle">Skvělá práce!</div>
+        <div class="result-sub" id="resSub"></div>
+        <div class="result-stats">
+          <div><div class="rs-num" id="r-ok">0</div><div class="rs-label">Správně</div></div>
+          <div><div class="rs-num" id="r-tot">0</div><div class="rs-label">Zodpovězeno</div></div>
+          <div><div class="rs-num" id="r-pct">0%</div><div class="rs-label">Úspěšnost</div></div>
+        </div>
+        <div class="result-btns">
+          <button class="btn btn-primary" onclick="restartQuiz()">↺ Zkusit znovu</button>
+          <a href="dashboard.html" class="btn btn-ghost">📊 Můj pokrok</a>
+          <a href="index.html#booking" class="btn btn-ghost">📅 Rezervovat lekci</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+const TIPS={all:'Přeskočte těžkou úlohu — vraťte se k ní až na konci. Čas je klíč.',analogy:'U analogií nejdřív definuj vztah v levém páru, pak hledej totéž vpravo.',series:'Zkus postupně: +konst., ×konst., střídání, kombinace.',logic:'Nakresli diagram množin — vizualizace odhalí klam rychle.',argument:'Hledej: nepodložené předpoklady, korelaci místo kauzality.',reading:'Přečti otázku PŘED textem — pak čteš cíleně.'};
+const TYPE_LABELS={analogy:'Analogie',series:'Logická řada',logic:'Logika',argument:'Argumentace',reading:'Porozumění textu'};
+const BADGES={analogy:'tb-analogy',series:'tb-series',logic:'tb-logic',argument:'tb-argument',reading:'tb-reading'};
+const DIFF_L={easy:'⬡ Lehká',medium:'⬡⬡ Střední',hard:'⬡⬡⬡ Těžká'};
+
+const QUESTIONS=[
+  {type:'analogy',diff:'easy',text:'KAPITÁN : LOĎ :: PILOT : ?',opts:['Letiště','Letadlo','Cestující','Hangár'],correct:1,expl:'Kapitán řídí loď — pilot řídí letadlo. Vztah: vedoucí : dopravní prostředek.'},
+  {type:'series',diff:'easy',text:'3, 6, 12, 24, ?',opts:['36','42','48','52'],correct:2,expl:'Každý člen se násobí 2. Tedy 24 × 2 = 48.'},
+  {type:'logic',diff:'medium',text:'Všichni studenti čtou knihy. Někteří čtenáři knih jsou vědci. Vyplývá z toho, že někteří studenti jsou vědci?',opts:['Ano, logicky vyplývá','Ne, nevyplývá','Nelze určit','Záleží na podmínkách'],correct:1,expl:'Nevyplývá — „někteří čtenáři jsou vědci" nemusí zahrnovat studenty.'},
+  {type:'argument',diff:'medium',text:'„Naše město by mělo zakázat auta v centru. Italská města, která to udělala, zaznamenala nárůst turistů." Co je nejslabším místem tohoto argumentu?',opts:['Italská města nejsou dobrý příklad','Turisté jsou důležití pro ekonomiku','Korelace nemusí být příčinná','Zákaz aut je technicky náročný'],correct:2,expl:'Argument předpokládá kauzální vztah tam, kde může jít jen o korelaci.'},
+  {type:'series',diff:'hard',text:'3, 8, 18, 38, ?',opts:['58','68','78','88'],correct:2,expl:'Vzorec: ×2 + 2. Tedy 38 × 2 = 76 + 2 = 78.'},
+  {type:'analogy',diff:'medium',text:'BAROMETR : TLAK :: TEPLOMĚR : ?',opts:['Počasí','Teplota','Vlhkost','Výška'],correct:1,expl:'Barometr měří tlak, teploměr měří teplotu. Vztah: přístroj : veličina.'},
+  {type:'reading',diff:'medium',text:'Jaký je hlavní argument textu?',ctx:'Globalizace přinesla ekonomické výhody, ale také prohlubuje nerovnosti. Výhody se rozdělují nerovnoměrně — bohatí bohatnou rychleji.',opts:['Globalizace je špatná','Globalizace má pozitivní i negativní důsledky','Technologie způsobují nerovnosti','Obchod by měl být omezen'],correct:1,expl:'Autor nepopírá výhody, ale upozorňuje na jejich nerovnoměrné rozdělení.'},
+  {type:'logic',diff:'hard',text:'Žádný profesor není student. Někteří studenti jsou sportovci. Vyplývá z toho, že žádný profesor není sportovec?',opts:['Ano','Ne — z premis to nevyplývá','Ano, ale jen za určitých podmínek','Nelze určit'],correct:1,expl:'Nevyplývá — profesor může být sportovec, aniž by byl student.'},
+  {type:'analogy',diff:'hard',text:'EPILOG : KNIHA :: KODA : ?',opts:['Báseň','Symfonie','Divadlo','Věta'],correct:1,expl:'Epilog je závěr knihy, koda je závěr hudební skladby. Vztah: závěrečná část : umělecké dílo.'},
+  {type:'series',diff:'hard',text:'1, 1, 2, 3, 5, 8, ?',opts:['11','12','13','14'],correct:2,expl:'Fibonacciho posloupnost — každý člen = součet dvou předchozích. 5 + 8 = 13.'},
+  {type:'analogy',diff:'easy',text:'SPISOVATEL : ROMÁN :: SKLADATEL : ?',opts:['Divadlo','Symfonie','Galerie','Verš'],correct:1,expl:'Spisovatel tvoří román, skladatel tvoří symfonii. Vztah: tvůrce : dílo.'},
+  {type:'series',diff:'medium',text:'2, 5, 10, 17, 26, ?',opts:['35','37','36','38'],correct:1,expl:'Přidávané číslo roste o 2: +3, +5, +7, +9, +11. Tedy 26 + 11 = 37.'},
+];
+
+let filters={type:'all',diff:'all'};
+let queue=[],qIdx=0,selected=null,answered=false;
+let stats={ans:0,ok:0,bad:0,skip:0};
+let timerSec=90,timerRunning=true,timerInt=null;
+
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function getQueue(){return shuffle(QUESTIONS.filter(q=>(filters.type==='all'||q.type===filters.type)&&(filters.diff==='all'||q.diff===filters.diff)))}
+
+function setFilter(key,val,btn){
+  filters[key]=val;
+  btn.closest('.s-card').querySelectorAll(key==='type'?'.f-btn':'.d-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tipText').textContent=TIPS[val]||TIPS.all;
+  restartQuiz();
+}
+
+function loadQ(){
+  if(qIdx>=queue.length){showResult();return}
+  const q=queue[qIdx];answered=false;selected=null;
+  document.getElementById('qText').textContent=q.text;
+  const ctx=document.getElementById('qCtx');
+  if(q.ctx){ctx.textContent=q.ctx;ctx.style.display='block'}else ctx.style.display='none';
+  const badge=document.getElementById('qBadge');
+  badge.textContent=TYPE_LABELS[q.type];badge.className='type-badge '+BADGES[q.type];
+  document.getElementById('qDiff').textContent=DIFF_L[q.diff];
+  document.getElementById('qNumB').textContent='#'+(qIdx+1);
+  document.getElementById('qNumD').textContent=qIdx+1;
+  document.getElementById('qTotD').textContent=queue.length;
+  document.getElementById('qTypeD').textContent=TYPE_LABELS[q.type];
+  document.getElementById('btnCheck').style.display='';
+  document.getElementById('btnNext').style.display='none';
+  document.getElementById('expl').className='explanation';
+  document.getElementById('expl').innerHTML='';
+  const oc=document.getElementById('optsContainer');oc.innerHTML='';
+  const letters=['A','B','C','D'];
+  q.opts.forEach((opt,i)=>{
+    const el=document.createElement('div');el.className='opt';
+    el.innerHTML=`<div class="opt-letter">${letters[i]}</div><div>${opt}</div>`;
+    el.onclick=()=>selectOpt(el,i);oc.appendChild(el);
+  });
+  resetTimer();updateStats();
+}
+
+function selectOpt(el,i){
+  if(answered)return;
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');selected=i;
+}
+
+function checkAnswer(){
+  if(selected===null||answered)return;
+  answered=true;const q=queue[qIdx];
+  const opts=document.querySelectorAll('.opt');
+  opts.forEach(o=>o.classList.add('disabled'));
+  stopTimer();stats.ans++;
+  if(selected===q.correct){opts[selected].classList.add('correct');stats.ok++;}
+  else{opts[selected].classList.add('wrong');opts[q.correct].classList.add('correct');stats.bad++;}
+  const expl=document.getElementById('expl');
+  expl.innerHTML=`<strong>${selected===q.correct?'✅ Správně!':'❌ Špatně.'}</strong> ${q.expl}`;
+  expl.className='explanation show';
+  document.getElementById('btnCheck').style.display='none';
+  document.getElementById('btnNext').style.display='';
+  updateStats();
+}
+
+function skipQ(){if(answered)return;stats.skip++;stats.ans++;qIdx++;updateStats();loadQ()}
+function nextQ(){qIdx++;loadQ()}
+
+function updateStats(){
+  document.getElementById('st-ans').textContent=stats.ans;
+  document.getElementById('st-ok').textContent=stats.ok;
+  document.getElementById('st-bad').textContent=stats.bad;
+  document.getElementById('st-skip').textContent=stats.skip;
+  const pct=stats.ans>0?Math.round(stats.ok/stats.ans*100):0;
+  document.getElementById('st-pct').textContent=stats.ans>0?pct+'%':'—';
+  document.getElementById('navScore').textContent=stats.ok+' / '+stats.ans;
+  const prog=queue.length>0?Math.round(qIdx/queue.length*100):0;
+  document.getElementById('st-bar').style.width=prog+'%';
+  document.getElementById('st-prog-txt').textContent=qIdx+' / '+queue.length;
+}
+
+function showResult(){
+  document.getElementById('qCard').style.display='none';
+  const rs=document.getElementById('resultScreen');rs.className='result-screen show';
+  const pct=stats.ans>0?Math.round(stats.ok/stats.ans*100):0;
+  document.getElementById('r-ok').textContent=stats.ok;
+  document.getElementById('r-tot').textContent=stats.ans;
+  document.getElementById('r-pct').textContent=pct+'%';
+  const emoji=pct>=80?'🏆':pct>=60?'👍':'💪';
+  const title=pct>=80?'Výborně!':pct>=60?'Dobrá práce!':'Trénink dělá mistra!';
+  document.getElementById('resEmoji').textContent=emoji;
+  document.getElementById('resTitle').textContent=title;
+  document.getElementById('resSub').textContent=`Úspěšnost ${pct}% — ${pct>=70?'připravenost na test je solidní!':'ještě jednou a sleduj, jak rosteš.'}`;
+  // Save best score to localStorage
+  const prev=parseInt(localStorage.getItem('osp_best_score')||'0');
+  if(pct>prev)localStorage.setItem('osp_best_score',pct);
+}
+
+function restartQuiz(){
+  stats={ans:0,ok:0,bad:0,skip:0};qIdx=0;answered=false;selected=null;
+  queue=getQueue();
+  document.getElementById('qCard').style.display='';
+  document.getElementById('resultScreen').className='result-screen';
+  updateStats();loadQ();
+}
+
+// Timer
+function pad(n){return String(n).padStart(2,'0')}
+function renderTimer(){
+  const m=Math.floor(timerSec/60),s=timerSec%60;
+  const el=document.getElementById('timerD');
+  el.textContent=pad(m)+':'+pad(s);
+  el.className='timer'+(timerSec<=15?' danger':timerSec<=30?' warn':'');
+}
+function stopTimer(){clearInterval(timerInt);timerRunning=false;document.getElementById('timerToggleBtn').textContent='▶ Start'}
+function startTimerCount(){
+  timerInt=setInterval(()=>{
+    if(timerRunning&&!answered){timerSec--;renderTimer();if(timerSec<=0){stopTimer();checkAnswer()}}
+  },1000);
+}
+function resetTimer(){clearInterval(timerInt);timerSec=90;timerRunning=true;document.getElementById('timerToggleBtn').textContent='⏸ Pauza';renderTimer();startTimerCount()}
+function toggleTimer(){timerRunning=!timerRunning;document.getElementById('timerToggleBtn').textContent=timerRunning?'⏸ Pauza':'▶ Start'}
+
+restartQuiz();
+</script>
+</body>
+</html>

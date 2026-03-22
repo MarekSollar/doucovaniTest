@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marek Šollar — Doučování SCIO OSP & ZSV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#111116;--ink-soft:#64646e;--ink-faint:#adadba;--bg:#f7f7f5;--white:#fff;--blue:#1847f0;--blue-mid:#3b64f5;--blue-light:#eaedff;--blue-glow:rgba(24,71,240,.15);--green:#166534;--green-bg:#dcfce7;--red:#9f1239;--red-bg:#ffe4e6;--border:rgba(17,17,22,.07);--border-strong:rgba(17,17,22,.14);--shadow-sm:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.04);--shadow-md:0 4px 6px rgba(0,0,0,.04),0 20px 48px rgba(0,0,0,.08);--shadow-lg:0 8px 12px rgba(0,0,0,.06),0 32px 64px rgba(0,0,0,.12);--transition:.22s cubic-bezier(.4,0,.2,1);--font:'Plus Jakarta Sans',-apple-system,sans-serif}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(circle,rgba(17,17,22,.055) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%)}
+    .wrap{max-width:1160px;margin:0 auto;padding:0 44px;position:relative;z-index:1}
+    @media(max-width:700px){.wrap{padding:0 20px}}
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+    .eyebrow::before{content:'';width:16px;height:2px;background:var(--blue);border-radius:2px}
+    .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font);font-size:.9375rem;font-weight:600;padding:13px 26px;border-radius:100px;text-decoration:none;border:none;cursor:pointer;transition:all var(--transition);white-space:nowrap}
+    .btn-primary{background:var(--blue);color:#fff}
+    .btn-primary:hover{background:#0f35c9;transform:translateY(-1px);box-shadow:0 6px 24px var(--blue-glow)}
+    .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--border-strong)}
+    .btn-ghost:hover{border-color:var(--ink);background:var(--white)}
+    .btn-white{background:var(--white);color:var(--ink)}
+    .btn-white:hover{background:#f0f0ee;transform:translateY(-1px)}
+    .btn-sm{padding:9px 18px;font-size:.84rem}
+    /* NAV */
+    nav{position:sticky;top:0;z-index:900;background:rgba(247,247,245,.9);backdrop-filter:blur(18px) saturate(160%);border-bottom:1px solid var(--border)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:20px}
+    .nav-logo{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+    .nav-logo span{color:var(--blue)}
+    .nav-links{display:flex;gap:24px;list-style:none}
+    .nav-links a{font-size:.84rem;font-weight:500;color:var(--ink-soft);text-decoration:none;transition:color var(--transition)}
+    .nav-links a:hover{color:var(--blue)}
+    .nav-links a.active{color:var(--blue);font-weight:600}
+    @media(max-width:860px){.nav-links{display:none}}
+    /* HERO */
+    .hero{padding:112px 0 96px}
+    .hero-layout{display:grid;grid-template-columns:1fr 400px;gap:72px;align-items:center}
+    @media(max-width:960px){.hero-layout{grid-template-columns:1fr;gap:48px}}
+    .hero-pill{display:inline-flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--border);border-radius:100px;padding:6px 16px 6px 8px;font-size:.78rem;font-weight:600;color:var(--ink-soft);margin-bottom:28px;box-shadow:var(--shadow-sm)}
+    .hero-pill-dot{width:26px;height:26px;border-radius:100px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800}
+    .hero h1{font-size:clamp(2.7rem,5.5vw,4.8rem);font-weight:800;line-height:1.04;letter-spacing:-.04em;margin-bottom:24px}
+    .hero h1 em{font-style:normal;color:var(--blue)}
+    .hero-sub{font-size:1.08rem;color:var(--ink-soft);font-weight:400;line-height:1.75;max-width:520px;margin-bottom:40px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-card{background:var(--white);border:1px solid var(--border);border-radius:28px;padding:32px;box-shadow:var(--shadow-lg);animation:float 7s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @media(max-width:960px){.hero-card{animation:none;max-width:380px}}
+    .hero-card-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:28px}
+    .hero-stat{display:flex;align-items:baseline;justify-content:space-between;padding:18px 0;border-bottom:1px solid var(--border)}
+    .hero-stat:last-child{border-bottom:none;padding-bottom:0}
+    .hero-stat-val{font-size:2.6rem;font-weight:800;letter-spacing:-.04em;color:var(--blue);line-height:1}
+    .hero-stat-label{font-size:.82rem;color:var(--ink-soft);text-align:right;max-width:140px;line-height:1.4}
+    /* ABOUT */
+    .about-sec{background:var(--white);padding:100px 0}
+    .about-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    @media(max-width:860px){.about-layout{grid-template-columns:1fr;gap:48px}}
+    .about-img-wrap{position:relative}
+    .about-img{width:100%;aspect-ratio:3/4;background:linear-gradient(145deg,#c7d5ff 0%,#a5b8ff 100%);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:7rem;user-select:none}
+    .about-chip{position:absolute;bottom:20px;right:-16px;background:var(--white);border:1px solid var(--border);border-radius:18px;padding:14px 20px;box-shadow:var(--shadow-md);text-align:center}
+    .about-chip-num{font-size:1.8rem;font-weight:800;color:var(--blue);letter-spacing:-.04em;line-height:1}
+    .about-chip-label{font-size:.72rem;color:var(--ink-soft);margin-top:2px}
+    .about-copy h2{font-size:clamp(2rem,3.5vw,2.9rem);font-weight:800;letter-spacing:-.04em;margin-bottom:20px;line-height:1.1}
+    .about-copy p{font-size:1rem;color:var(--ink-soft);line-height:1.8;margin-bottom:18px}
+    .quote-strip{border-left:3px solid var(--blue);padding:18px 22px;background:var(--blue-light);border-radius:0 16px 16px 0;margin-top:28px;font-size:.9rem;color:var(--ink-soft);line-height:1.75;font-style:italic}
+    .quote-strip strong{font-style:normal;color:var(--ink)}
+    /* SERVICES */
+    .services-sec{padding:100px 0}
+    .sec-header{margin-bottom:56px}
+    .sec-header h2{font-size:clamp(2rem,3.5vw,2.9rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;max-width:560px;margin-top:4px}
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    @media(max-width:860px){.services-grid{grid-template-columns:1fr}}
+    .svc-card{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:28px;transition:all var(--transition);position:relative;overflow:hidden}
+    .svc-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--blue-mid));transform:scaleX(0);transform-origin:left;transition:transform var(--transition)}
+    .svc-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:rgba(24,71,240,.12)}
+    .svc-card:hover::before{transform:scaleX(1)}
+    .svc-icon{width:48px;height:48px;border-radius:14px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:20px}
+    .svc-card h3{font-size:1.05rem;font-weight:700;margin-bottom:10px}
+    .svc-card p{font-size:.875rem;color:var(--ink-soft);line-height:1.7}
+    .svc-badge{display:inline-block;margin-top:18px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:100px;background:var(--blue-light);color:var(--blue)}
+    /* PRICING */
+    .pricing-sec{background:var(--white);padding:100px 0}
+    .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+    @media(max-width:860px){.pricing-grid{grid-template-columns:1fr}}
+    .price-card{background:var(--bg);border:1px solid var(--border);border-radius:28px;padding:32px;position:relative;transition:all var(--transition)}
+    .price-card:hover:not(.featured){transform:translateY(-4px);box-shadow:var(--shadow-md)}
+    .price-card.featured{background:var(--blue);border-color:transparent;margin-top:-16px;padding-top:48px}
+    .featured-tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border-radius:100px;white-space:nowrap}
+    .price-name{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:16px}
+    .price-card.featured .price-name{color:rgba(255,255,255,.65)}
+    .price-amount{display:flex;align-items:baseline;gap:5px;margin-bottom:8px}
+    .price-num{font-size:2.8rem;font-weight:800;letter-spacing:-.05em;line-height:1;color:var(--ink)}
+    .price-card.featured .price-num{color:#fff}
+    .price-unit{font-size:.875rem;color:var(--ink-soft)}
+    .price-card.featured .price-unit{color:rgba(255,255,255,.6)}
+    .price-desc{font-size:.875rem;color:var(--ink-soft);margin-bottom:24px;line-height:1.55}
+    .price-card.featured .price-desc{color:rgba(255,255,255,.65)}
+    .price-sep{border:none;border-top:1px solid var(--border);margin-bottom:24px}
+    .price-card.featured .price-sep{border-color:rgba(255,255,255,.12)}
+    .price-features{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+    .pf{display:flex;align-items:flex-start;gap:10px;font-size:.875rem;color:var(--ink-soft);line-height:1.5}
+    .price-card.featured .pf{color:rgba(255,255,255,.75)}
+    .pf-dot{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+    .pf-dot circle{fill:none;stroke:var(--blue);stroke-width:1.5}
+    .pf-dot polyline{fill:none;stroke:var(--blue);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .price-card.featured .pf-dot circle{stroke:rgba(255,255,255,.7)}
+    .price-card.featured .pf-dot polyline{stroke:rgba(255,255,255,.9)}
+    .price-note{font-size:.72rem;color:var(--ink-faint);text-align:center;margin-top:12px}
+    .price-card.featured .price-note{color:rgba(255,255,255,.4)}
+    .price-card .btn{width:100%;justify-content:center}
+    .price-card:not(.featured) .btn{background:var(--ink);color:#fff}
+    .price-card:not(.featured) .btn:hover{background:var(--blue)}
+    .price-card.featured .btn{background:#fff;color:var(--blue)}
+    .price-card.featured .btn:hover{background:#eef0ff}
+    .pricing-note{text-align:center;margin-top:36px;font-size:.875rem;color:var(--ink-soft)}
+    .pricing-note a{color:var(--blue);text-decoration:none;font-weight:600}
+    /* DEMO */
+    .demo-sec{background:var(--ink);padding:100px 0}
+    .demo-layout{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+    @media(max-width:860px){.demo-layout{grid-template-columns:1fr;gap:48px}}
+    .demo-sec .eyebrow{color:#7da4ff}
+    .demo-sec .eyebrow::before{background:#7da4ff}
+    .demo-copy h2{font-size:clamp(2rem,3.5vw,2.9rem);font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1.1;margin-bottom:18px}
+    .demo-copy p{font-size:.975rem;color:rgba(255,255,255,.48);line-height:1.8;margin-bottom:32px}
+    .video-box{background:#1a1a24;border:1px solid rgba(255,255,255,.06);border-radius:24px;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;transition:border-color var(--transition)}
+    .video-box:hover{border-color:rgba(24,71,240,.5)}
+    .video-box:hover .vplay{transform:scale(1.08);box-shadow:0 0 0 10px rgba(24,71,240,.18)}
+    .vplay{width:68px;height:68px;border-radius:50%;background:var(--blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;transition:all var(--transition)}
+    .vdur{position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,.5);padding:3px 10px;border-radius:100px;font-size:.72rem;color:rgba(255,255,255,.5)}
+    .vthumb-label{position:absolute;top:20px;left:20px;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.28)}
+    /* EXAMPLES */
+    .examples-sec{padding:100px 0}
+    .examples-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    @media(max-width:860px){.examples-grid{grid-template-columns:1fr}}
+    .ex-card{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:26px;display:flex;flex-direction:column}
+    .ex-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+    .ex-q{font-size:.95rem;font-weight:600;line-height:1.55;margin-bottom:20px;flex-grow:1}
+    .ex-options{display:flex;flex-direction:column;gap:8px}
+    .ex-opt{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1.5px solid var(--border);cursor:pointer;font-size:.865rem;transition:all var(--transition);user-select:none}
+    .ex-opt:hover{border-color:var(--blue);background:var(--blue-light)}
+    .ex-opt.sel{border-color:var(--blue);background:var(--blue-light)}
+    .ex-radio{width:17px;height:17px;border-radius:50%;border:2px solid var(--border-strong);flex-shrink:0;transition:all var(--transition);position:relative}
+    .ex-opt.sel .ex-radio{border-color:var(--blue);background:var(--blue)}
+    .ex-opt.sel .ex-radio::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:50%;background:#fff}
+    .ex-btn{margin-top:16px;padding:11px;border-radius:12px;background:var(--ink);color:#fff;border:none;cursor:pointer;font-family:var(--font);font-size:.875rem;font-weight:600;transition:all var(--transition)}
+    .ex-btn:hover{background:var(--blue)}
+    .ex-fb{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:.82rem;line-height:1.55;display:none}
+    .ex-fb.ok{display:block;background:var(--green-bg);color:var(--green)}
+    .ex-fb.no{display:block;background:var(--red-bg);color:var(--red)}
+    .ex-footnote{text-align:center;margin-top:36px;font-size:.875rem;color:var(--ink-soft)}
+    .ex-footnote strong{color:var(--blue)}
+    /* DATES */
+    .dates-sec{background:var(--white);padding:100px 0}
+    .dates-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+    @media(max-width:860px){.dates-grid{grid-template-columns:1fr}}
+    .date-card{border:1px solid var(--border);border-radius:24px;padding:30px;transition:all var(--transition)}
+    .date-card:hover:not(.date-featured){border-color:var(--blue);transform:translateY(-3px)}
+    .date-featured{background:var(--blue);border-color:transparent}
+    .date-mo{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
+    .date-featured .date-mo{color:rgba(255,255,255,.55)}
+    .date-day{font-size:3.2rem;font-weight:800;letter-spacing:-.05em;line-height:1;margin-bottom:12px}
+    .date-featured .date-day{color:#fff}
+    .date-info{font-size:.875rem;color:var(--ink-soft);line-height:1.6}
+    .date-featured .date-info{color:rgba(255,255,255,.7)}
+    .date-dl{display:inline-block;margin-top:16px;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:100px;background:var(--blue-light);color:var(--blue)}
+    .date-featured .date-dl{background:rgba(255,255,255,.2);color:#fff}
+    .date-extra{display:flex;flex-direction:column;gap:16px}
+    .date-mini{border:1px solid var(--border);border-radius:18px;padding:20px;transition:all var(--transition)}
+    .date-mini:hover{border-color:var(--blue)}
+    .date-mini-title{font-size:.9rem;font-weight:700;margin-bottom:6px}
+    .date-mini-body{font-size:.8rem;color:var(--ink-soft);line-height:1.55}
+    /* BOOKING */
+    .booking-sec{padding:100px 0}
+    .booking-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+    @media(max-width:860px){.booking-layout{grid-template-columns:1fr;gap:48px}}
+    .booking-copy h2{font-size:clamp(2rem,3.5vw,2.9rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:18px}
+    .booking-copy p{font-size:.975rem;color:var(--ink-soft);line-height:1.8;margin-bottom:32px}
+    .perks{display:flex;flex-direction:column;gap:16px}
+    .perk-item{display:flex;align-items:flex-start;gap:14px}
+    .perk-dot{width:32px;height:32px;border-radius:10px;flex-shrink:0;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:.85rem}
+    .perk-item p{font-size:.875rem;color:var(--ink-soft);line-height:1.6;margin:0}
+    .perk-item p strong{color:var(--ink)}
+    .form-box{background:var(--white);border:1px solid var(--border);border-radius:28px;padding:36px;box-shadow:var(--shadow-sm)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:480px){.form-row{grid-template-columns:1fr}}
+    .fg{margin-bottom:18px}
+    .fg label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px}
+    .fg input,.fg select{width:100%;padding:12px 15px;border:1.5px solid var(--border);border-radius:12px;font-family:var(--font);font-size:.9375rem;color:var(--ink);background:var(--bg);transition:all var(--transition);outline:none;-webkit-appearance:none;appearance:none}
+    .fg input:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,240,.1);background:var(--white)}
+    .slider-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+    .slider-val{font-size:1.5rem;font-weight:800;color:var(--blue);letter-spacing:-.04em}
+    .slider-hint{font-size:.72rem;color:var(--ink-faint)}
+    input[type="range"]{width:100%;-webkit-appearance:none;appearance:none;height:5px;border-radius:100px;outline:none;cursor:pointer;background:linear-gradient(to right,var(--blue) 0%,var(--blue) 40%,#dde1f8 40%,#dde1f8 100%)}
+    input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--white);border:3px solid var(--blue);box-shadow:0 2px 6px rgba(24,71,240,.3);cursor:pointer}
+    .slider-labels{display:flex;justify-content:space-between;font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+    .form-submit{width:100%;padding:15px;border-radius:14px;background:var(--blue);color:#fff;border:none;cursor:pointer;font-family:var(--font);font-size:1rem;font-weight:700;transition:all var(--transition);margin-top:6px;letter-spacing:-.01em}
+    .form-submit:hover{background:#0f35c9;transform:translateY(-1px);box-shadow:0 8px 24px var(--blue-glow)}
+    .form-status{margin-top:14px;padding:13px;border-radius:12px;font-size:.875rem;display:none}
+    .form-status.ok{display:block;background:var(--green-bg);color:var(--green)}
+    .form-status.err{display:block;background:var(--red-bg);color:var(--red)}
+    .form-privacy{text-align:center;margin-top:12px;font-size:.72rem;color:var(--ink-faint)}
+    /* FOOTER */
+    footer{background:var(--ink);padding:52px 0;text-align:center}
+    .footer-logo{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:10px}
+    .footer-logo span{color:var(--blue-mid)}
+    footer p{font-size:.83rem;color:rgba(255,255,255,.35);line-height:1.8}
+    footer a{color:rgba(255,255,255,.35);text-decoration:none;transition:color var(--transition)}
+    footer a:hover{color:#fff}
+    .footer-hr{border:none;border-top:1px solid rgba(255,255,255,.06);margin:22px auto;max-width:320px}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a href="index.html" class="nav-logo">Marek Šollar <span>· OSP</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Domů</a></li>
+      <li><a href="rodice.html">Pro rodiče</a></li>
+      <li><a href="stres.html">Jak na stres</a></li>
+      <li><a href="portal.html">✏️ Procvičovat</a></li>
+      <li><a href="dashboard.html">Můj pokrok</a></li>
+      <li><a href="admin.html">⚙️ Admin</a></li>
+    </ul>
+    <a href="#booking" class="btn btn-primary btn-sm">Rezervovat →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-layout">
+      <div class="reveal">
+        <div class="hero-pill"><div class="hero-pill-dot">★</div>Absolvoval SCIO 2026 · psychologie MUNI</div>
+        <h1>Tvůj percentil<br>nemusí být<br><em>náhoda.</em></h1>
+        <p class="hero-sub">Připravím tě na SCIO OSP & ZSV pomocí strategie, která funguje — ne biflováním, ale pochopením logiky testů. Sám jsem si tím prošel a vím, kde se ztrácejí body.</p>
+        <div class="hero-actions">
+          <a href="#booking" class="btn btn-primary">Začít přípravu →</a>
+          <a href="#demo" class="btn btn-ghost">▶ Ukázka lekce zdarma</a>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="hero-card">
+          <div class="hero-card-title">Výsledky studentů 2024–25</div>
+          <div class="hero-stat"><div class="hero-stat-val">92%</div><div class="hero-stat-label">přijatých na vysněnou VŠ</div></div>
+          <div class="hero-stat"><div class="hero-stat-val">+23</div><div class="hero-stat-label">průměrný nárůst percentilu</div></div>
+          <!-- <div class="hero-stat"><div class="hero-stat-val">psych.<br><span style="font-size:1.2rem">MUNI</span></div><div class="hero-stat-label">kde jsem studoval já</div></div>  -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-sec" id="about">
+  <div class="wrap">
+    <div class="about-layout">
+      <div class="about-img-wrap reveal">
+        <div class="about-img">🎓</div>
+        <div class="about-chip"><div class="about-chip-num">psych.</div><div class="about-chip-label">MUNI Brno</div></div>
+      </div>
+      <div class="about-copy reveal d1">
+        <div class="eyebrow">O mně</div>
+        <h2>Prošel jsem si tím sám — a vím, jak to dělat správně.</h2>
+        <p>Jmenuji se Marek Šollar a sám jsem SCIO testy absolvoval v roce 2026. Sám jsem se připravoval půl roku, absolvoval desítky testů a navštívil spoustu doučování, dělal chyby a hledal, co skutečně funguje.</p>
+        <!-- <p>Výsledek? Dostal jsem se na psychologii na MUNI — jeden z nejnáročnějších oborů v ČR. Pomáhám studentům se dostat na práva, psychologii, VŠE, FSV UK, MUNI a další prestižní fakulty.</p> -->
+        <div class="quote-strip">Moje metoda není o biflování. Je o pochopení <strong>logiky testů</strong>, správném time-managementu a odbourání stresu v den D.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services-sec" id="services">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <div class="eyebrow">Nabídka</div>
+      <h2>Příprava šitá přesně na tebe</h2>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal d1"><div class="svc-icon">📋</div><h3>Individuální plán</h3><p>Začínáme diagnostickým testem. Každý plán je jiný — záleží na tvé startovací pozici a cílovém percentilu.</p><span class="svc-badge">Osobní přístup</span></div>
+      <div class="svc-card reveal d2"><div class="svc-icon">🎥</div><h3>Online & osobní lekce</h3><p>Flexibilní formát — online přes Zoom nebo osobně v Brně a Praze. První lekce je vždy zdarma.</p><span class="svc-badge">Brno · Praha · Online</span></div>
+      <div class="svc-card reveal d3"><div class="svc-icon">🗄️</div><h3>800+ úloh & videovýkladů</h3><p>Vlastní banka úloh z ostrých testů, rozbory chyb a videovýklady ke každému typu úlohy. Přístup 24/7.</p><span class="svc-badge">Přístup 24/7</span></div>
+      <div class="svc-card reveal d1"><div class="svc-icon">🧪</div><h3>Simulace nanečisto</h3><p>Kompletní ostré testy pod časovým tlakem s individuálním vyhodnocením a podrobným rozborem chyb.</p><span class="svc-badge">Reálné podmínky</span></div>
+      <div class="svc-card reveal d2"><div class="svc-icon">⚡</div><h3>Víkendový bootcamp</h3><p>Intenzivní 8hodinový kurz těsně před termínem. Kapacita jen 8 studentů — soustředěná pozornost pro každého.</p><span class="svc-badge">Limitovaná kapacita</span></div>
+      <div class="svc-card reveal d3"><div class="svc-icon">🧠</div><h3>Stresový management</h3><p>Mentální příprava na testový den — jak neztratit hlavu a podat maximální výkon pod tlakem.</p><span class="svc-badge">Bonus zdarma</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing-sec" id="pricing">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <div class="eyebrow">Ceník</div>
+      <h2>Transparentní ceny,<br>žádná překvapení</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal d1">
+        <div class="price-name">Jednotlivá lekce</div>
+        <div class="price-amount"><div class="price-num">650</div><div class="price-unit">Kč / 60 min</div></div>
+        <p class="price-desc">Ideální pro vyzkoušení nebo cílenou přípravu bez závazků.</p>
+        <hr class="price-sep">
+        <div class="price-features">
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Online nebo osobně (Brno/Praha)</div>
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Záznam lekce k opakování</div>
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Materiály k dané lekci</div>
+        </div>
+        <a href="#booking" class="btn">Rezervovat lekci</a>
+        <p class="price-note">1. lekce vždy zdarma</p>
+      </div>
+      <div class="price-card featured reveal d2">
+        <div class="featured-tag">Nejoblíbenější</div>
+        <div class="price-name">Balíček 10 lekcí</div>
+        <div class="price-amount"><div class="price-num">550</div><div class="price-unit">Kč / lekce</div></div>
+        <p class="price-desc">Celkem 5 500 Kč — úspora 1 000 Kč. Optimální délka pro výrazný nárůst percentilu.</p>
+        <hr class="price-sep">
+        <div class="price-features">
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Vše z jednotlivé lekce</div>
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Individuální plán přípravy</div>
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Přístup k celé bance 800+ úloh</div>
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>1× simulace testu nanečisto</div>
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Podpora mezi lekcemi (WhatsApp)</div>
+        </div>
+        <a href="#booking" class="btn">Začít přípravu</a>
+        <p class="price-note">Platba předem · platnost 6 měsíců</p>
+      </div>
+      <div class="price-card reveal d3">
+        <div class="price-name">Víkendový bootcamp</div>
+        <div class="price-amount"><div class="price-num">1 800</div><div class="price-unit">Kč / os.</div></div>
+        <p class="price-desc">8 hodin intenzivní skupinové přípravy (max. 8 studentů) těsně před termínem.</p>
+        <hr class="price-sep">
+        <div class="price-features">
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Celodenní intenzivní příprava</div>
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Kompletní materiály & úlohy</div>
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Simulace testu + rozbor</div>
+          <div class="pf"><svg class="pf-dot" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><polyline points="5,8 7,10 11,6"/></svg>Stresový management</div>
+        </div>
+        <a href="#booking" class="btn">Rezervovat místo</a>
+        <p class="price-note">Kapacita 8 míst · Brno & Praha</p>
+      </div>
+    </div>
+    <p class="pricing-note reveal">Nejsi si jistý, co je pro tebe nejlepší? <a href="#booking">Napiš mi</a> — poradím zdarma.</p>
+  </div>
+</section>
+
+<section class="demo-sec" id="demo">
+  <div class="wrap">
+    <div class="demo-layout">
+      <div class="demo-copy reveal">
+        <div class="eyebrow">Ukázka</div>
+        <h2>Podívej se, jak probíhá lekce</h2>
+        <p>Rozbor logické řady z analytického oddílu — jak vyřešit složitou dedukci pod 60 vteřin. Bez stresu, bez náhody.</p>
+        <a href="#booking" class="btn btn-white">Domluvit zkušební lekci zdarma →</a>
+      </div>
+      <div class="reveal d2">
+        <div class="video-box" onclick="alert('🎥 Ukázková lekce bude brzy k dispozici. Zarezervuj konzultaci a pošleme ti ji zdarma!')">
+          <div class="vthumb-label">Analytická dedukce · OSP</div>
+          <button class="vplay">▶</button>
+          <div class="vdur">15:32</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="examples-sec" id="examples">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <div class="eyebrow">Příklady z ostrého testu</div>
+      <h2>Vyzkoušej si svou logiku</h2>
+    </div>
+    <div class="examples-grid">
+      <div class="ex-card reveal d1">
+        <div class="ex-label">Úloha 01 · Analogie</div>
+        <div class="ex-q">KAPITÁN : LODĚ :: ? : ?</div>
+        <div class="ex-options" id="o1">
+          <div class="ex-opt" data-v="a"><div class="ex-radio"></div>Ředitel : škola</div>
+          <div class="ex-opt" data-v="b"><div class="ex-radio"></div>Pilot : letadlo</div>
+          <div class="ex-opt" data-v="c"><div class="ex-radio"></div>Učitel : žák</div>
+          <div class="ex-opt" data-v="d"><div class="ex-radio"></div>Lékař : nemocnice</div>
+        </div>
+        <button class="ex-btn" onclick="check('o1','b','fb1','Kapitán řídí loď — pilot řídí letadlo. Vztah je vedoucí : dopravní prostředek, ne instituce.')">Zkontrolovat</button>
+        <div class="ex-fb" id="fb1"></div>
+      </div>
+      <div class="ex-card reveal d2">
+        <div class="ex-label">Úloha 02 · Logická řada</div>
+        <div class="ex-q">3 → 8 → 18 → 38 → ?</div>
+        <div class="ex-options" id="o2">
+          <div class="ex-opt" data-v="a"><div class="ex-radio"></div>58</div>
+          <div class="ex-opt" data-v="b"><div class="ex-radio"></div>68</div>
+          <div class="ex-opt" data-v="c"><div class="ex-radio"></div>78</div>
+          <div class="ex-opt" data-v="d"><div class="ex-radio"></div>88</div>
+        </div>
+        <button class="ex-btn" onclick="check('o2','c','fb2','Vzorec: ×2 + 2. Tedy 38 × 2 = 76, + 2 = 78.')">Zkontrolovat</button>
+        <div class="ex-fb" id="fb2"></div>
+      </div>
+      <div class="ex-card reveal d3">
+        <div class="ex-label">Úloha 03 · Argumentace</div>
+        <div class="ex-q">„Všichni fotbalisté jsou sportovci. Někteří sportovci jsou profesionálové. Tedy někteří fotbalisté jsou profesionálové." Platí závěr?</div>
+        <div class="ex-options" id="o3">
+          <div class="ex-opt" data-v="a"><div class="ex-radio"></div>Ano, logicky vyplývá</div>
+          <div class="ex-opt" data-v="b"><div class="ex-radio"></div>Ne, závěr nevyplývá</div>
+        </div>
+        <button class="ex-btn" onclick="check('o3','b','fb3','Závěr nevyplývá. „Někteří sportovci jsou profesionálové" nemusí zahrnovat fotbalisty — klasický logický klam.')">Zkontrolovat</button>
+        <div class="ex-fb" id="fb3"></div>
+      </div>
+    </div>
+    <p class="ex-footnote reveal">Toto jsou 3 z <strong>800+ úloh</strong> v mém kurzu — každá s detailním videorozborem. <a href="portal.html" style="color:var(--blue);font-weight:600">Jdi procvičovat →</a></p>
+  </div>
+</section>
+
+<section class="dates-sec" id="dates">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <div class="eyebrow">Termíny OSP 2026</div>
+      <h2>Naplánuj přípravu s dostatečným předstihem</h2>
+    </div>
+    <div class="dates-grid">
+      <div class="date-card reveal d1">
+        <div class="date-mo">Duben 2026</div>
+        <div class="date-day">25.</div>
+        <div class="date-info">Ideální pro studenty s delší přípravou. Oblíbený termín pro práva a ekonomii.</div>
+        <span class="date-dl">Přihláška do 9. 4.</span>
+      </div>
+      <div class="date-card date-featured reveal d2">
+        <div class="date-mo">Květen 2026</div>
+        <div class="date-day">23.</div>
+        <div class="date-info">Vhodný pro opakování nebo kratší přípravu. Srovnání s výsledky dubna.</div>
+        <span class="date-dl">Přihláška do 7. 5.</span>
+      </div>
+      <div class="date-extra reveal d3">
+        <div class="date-mini"><div class="date-mini-title">⚡ Víkendový bootcamp</div><div class="date-mini-body">8h intenzivní příprava těsně před termínem. Kapacita 8 studentů — rezervuj brzy.</div></div>
+        <div class="date-mini"><div class="date-mini-title">📊 Simulace nanečisto</div><div class="date-mini-body">Kompletní test za ostrých podmínek + osobní vyhodnocení a rozbor chyb.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="booking-sec" id="booking">
+  <div class="wrap">
+    <div class="booking-layout">
+      <div class="booking-copy reveal">
+        <div class="eyebrow">Rezervace</div>
+        <h2>Začni svou cestu k vysokému percentilu.</h2>
+        <p>Vyplň formulář a ozvu se ti do 24 hodin. Nastavíme plán přesně na tebe — první konzultace je vždy zdarma.</p>
+        <div class="perks">
+          <div class="perk-item"><div class="perk-dot">✓</div><p><strong>1. lekce zdarma</strong> — bez závazků, zjistíme, kde stojíš</p></div>
+          <div class="perk-item"><div class="perk-dot">📱</div><p><strong>Online i osobně</strong> — Brno, Praha nebo Zoom</p></div>
+          <div class="perk-item"><div class="perk-dot">⚡</div><p><strong>Odpovím do 24 hodin</strong> — včetně víkendů</p></div>
+          <div class="perk-item"><div class="perk-dot">🎯</div><p><strong>Individuální plán</strong> — žádné šablony, čistá strategie</p></div>
+        </div>
+      </div>
+      <div class="reveal d1">
+        <div class="form-box">
+          <form id="mainForm">
+            <div class="form-row">
+              <div class="fg"><label>Jméno</label><input type="text" id="f-name" placeholder="Jan" required></div>
+              <div class="fg"><label>Příjmení</label><input type="text" id="f-surname" placeholder="Novák" required></div>
+            </div>
+            <div class="fg"><label>E-mail</label><input type="email" id="f-email" placeholder="jan@email.cz" required></div>
+            <div class="fg">
+              <label>Termíny, které plánuješ zkoušet</label>
+              <select id="f-term" required>
+                <option value="" disabled selected>Vyber termín…</option>
+                <option>25. dubna 2026</option>
+                <option>23. května 2026</option>
+                <option>Oba termíny (duben i květen)</option>
+                <option>Zatím nevybráno</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Vysněný percentil</label>
+              <div class="slider-top">
+                <span class="slider-val" id="sliderVal">70. percentil</span>
+                <span class="slider-hint">táhni pro změnu</span>
+              </div>
+              <input type="range" id="f-percentil" min="50" max="99" value="70" step="1">
+              <div class="slider-labels"><span>50.</span><span>75.</span><span>99.</span></div>
+            </div>
+            <button type="submit" class="form-submit">Odeslat a domluvit 1. konzultaci zdarma →</button>
+            <div class="form-status" id="formStatus"></div>
+            <p class="form-privacy">🔒 Tvoje údaje zůstávají soukromé.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-logo">Marek Šollar <span>OSP</span></div>
+    <p>Doučování SCIO OSP & ZSV · 92% úspěšnost <!-- · psychologie MUNI --></p>
+    <hr class="footer-hr">
+    <p style="margin-bottom:10px">
+      <a href="rodice.html">Pro rodiče</a> &nbsp;·&nbsp;
+      <a href="stres.html">Jak na stres</a> &nbsp;·&nbsp;
+      <a href="portal.html">Procvičovací portál</a> &nbsp;·&nbsp;
+      <a href="onboarding.html">Po rezervaci</a> &nbsp;·&nbsp;
+      <a href="dashboard.html">Dashboard studenta</a> &nbsp;·&nbsp;
+      <a href="admin.html">Admin</a>
+    </p>
+    <p><a href="mailto:marek.sollar@doucovaniosp.cz">marek.sollar@doucovaniosp.cz</a> &nbsp;·&nbsp; <a href="tel:+420777123456">+420 777 123 456</a> &nbsp;·&nbsp; <a href="#">@marek.sollar</a></p>
+  </div>
+</footer>
+
+<script>
+  // Reveal
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Examples
+  document.querySelectorAll('.ex-options').forEach(grp=>{
+    grp.querySelectorAll('.ex-opt').forEach(opt=>{
+      opt.addEventListener('click',()=>{
+        grp.querySelectorAll('.ex-opt').forEach(o=>o.classList.remove('sel'));
+        opt.classList.add('sel');
+      });
+    });
+  });
+  function check(grpId,correct,fbId,explanation){
+    const grp=document.getElementById(grpId);
+    const sel=grp.querySelector('.ex-opt.sel');
+    const fb=document.getElementById(fbId);
+    if(!sel){fb.textContent='Vyber prosím jednu možnost.';fb.className='ex-fb no';return}
+    if(sel.dataset.v===correct){fb.innerHTML='✅ '+explanation;fb.className='ex-fb ok'}
+    else{fb.innerHTML='❌ Špatně. '+explanation;fb.className='ex-fb no'}
+  }
+
+  // Slider
+  const slider=document.getElementById('f-percentil');
+  const sliderVal=document.getElementById('sliderVal');
+  function updateSlider(){
+    const v=+slider.value;
+    sliderVal.textContent=v+'. percentil';
+    const pct=(v-50)/(99-50)*100;
+    slider.style.background=`linear-gradient(to right,var(--blue) 0%,var(--blue) ${pct}%,#dde1f8 ${pct}%,#dde1f8 100%)`;
+  }
+  slider.addEventListener('input',updateSlider);
+  updateSlider();
+
+  // Form → save to localStorage + redirect to onboarding
+  document.getElementById('mainForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=document.getElementById('f-name').value.trim();
+    const surname=document.getElementById('f-surname').value.trim();
+    const email=document.getElementById('f-email').value.trim();
+    const term=document.getElementById('f-term').value;
+    const percentil=document.getElementById('f-percentil').value;
+    const st=document.getElementById('formStatus');
+    if(!name||!surname||!email||!term){
+      st.textContent='Vyplň prosím všechna povinná pole.';st.className='form-status err';return;
+    }
+    // Save to localStorage so other pages can read it
+    localStorage.setItem('osp_user',JSON.stringify({name,surname,email,term,percentil,registeredAt:new Date().toISOString()}));
+    st.innerHTML='✓ Skvěle, '+name+'! Přesměrovávám tě na uvítací stránku…';
+    st.className='form-status ok';
+    setTimeout(()=>{ window.location.href='onboarding.html'; },1200);
+  });
+</script>
+</body>
+</html>
